@@ -1,12 +1,19 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import "../CSS/Register.css"
 
-const onSubmit = (data) => {
-    console.log(data);
-}
-
 const Register = () => {
+
+    const onSubmit = (data) => {
+        console.log(data);
+    }
+
+    const navigate = useNavigate()
+
+    const handleNav = () => {
+        navigate("/login")
+    }
 
     const {
         register,
@@ -28,7 +35,7 @@ const Register = () => {
                             <input {...register("email")} required={true} placeholder='email' />
                             <div className="buttons">
                                 <button type='submit'>Sign-up</button>
-                                <button>Login</button>
+                                <button onClick={handleNav}>Login</button>
                             </div>
                         </form>
                     </div>

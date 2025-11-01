@@ -1,16 +1,25 @@
 import React from 'react'
 import "../CSS/Login.css"
 import { useForm } from "react-hook-form"
+import { useNavigate } from 'react-router-dom'
 
-const onSubmit = (data) => {
-    console.log(data);
-}
 
 const Login = () => {
+
+    const navigate = useNavigate()
+
     const {
         register,
         handleSubmit
     } = useForm()
+
+    const onSubmit = (data) => {
+        console.log(data);
+    }
+
+    const handleNav = () => {
+        navigate("/register")
+    }
 
     return (
         <>
@@ -25,7 +34,7 @@ const Login = () => {
                             <br />
                             <div className="buttons">
                                 <button type='submit'>Login</button>
-                                <button>Sign-up</button>
+                                <button onClick={handleNav}>Sign-up</button>
                             </div>
                         </form >
                     </div >
