@@ -25,7 +25,7 @@ const Login = () => {
         <>
             <div className="main">
                 <div className="login-card">
-                    <h1>Login</h1>
+                    <h1>LiveLink | Login</h1>
                     <div className="login-form">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <input {...register('username')} required={true} placeholder='Username' />
