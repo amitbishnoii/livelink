@@ -1,48 +1,41 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import "../CSS/Register.css"
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import styles from "../CSS/Register.module.css"; // ✅ use CSS module
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data);
-    }
+  const onSubmit = async (data) => {
+    const res = await fetch("http://localhost:3000/user/register")
+  };
 
-    const navigate = useNavigate()
+  const handleNav = (e) => {
+    e.preventDefault();
+    navigate("/login");
+  };
 
-    const handleNav = () => {
-        navigate("/login")
-    }
+  return (
+    <div className={styles.main}>
+      <div className={styles.card}>
+        <h1 className={styles.title}>LiveLink | Register</h1>
 
-    const {
-        register,
-        handleSubmit
-    } = useForm()
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+          <input {...register("firstName")} required placeholder="First Name" />
+          <input {...register("lastName")} required placeholder="Last Name" />
+          <input {...register("userName")} required placeholder="Username" />
+          <input {...register("password")} required type="password" placeholder="Password" />
+          <input {...register("email")} required type="email" placeholder="Email" />
 
-    return (
-        <>
-            <div className="main">
-                <div className="register-page">
+          <div className={styles.buttons}>
+            <button type="submit">Sign up</button>
+            <button onClick={handleNav}>Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
 
-                    <h1>Register</h1>
-                    <div className="register-form">
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <input {...register("firstName")} required={true} placeholder='First Name' />
-                            <input {...register("lastName")} required={true} placeholder='Last Name' />
-                            <input {...register("userName")} required={true} placeholder='Username' />
-                            <input {...register("password")} required={true} placeholder='Password' />
-                            <input {...register("email")} required={true} placeholder='email' />
-                            <div className="buttons">
-                                <button type='submit'>Sign-up</button>
-                                <button onClick={handleNav}>Login</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </>
-    )
-}
-
-export default Register
+export default Register;

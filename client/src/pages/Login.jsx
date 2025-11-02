@@ -1,47 +1,39 @@
-import React from 'react'
-import "../CSS/Login.css"
-import { useForm } from "react-hook-form"
-import { useNavigate } from 'react-router-dom'
-
+import React from 'react';
+import styles from "../CSS/Login.module.css";
+import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate()
+  const { register, handleSubmit } = useForm();
 
-    const {
-        register,
-        handleSubmit
-    } = useForm()
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
-    const onSubmit = (data) => {
-        console.log(data);
-    }
+  const handleNav = (e) => {
+    e.preventDefault();
+    navigate("/register");
+  };
 
-    const handleNav = () => {
-        navigate("/register")
-    }
+  return (
+    <div className={styles.main}>
+      <div className={styles.card}>
+        <h1 className={styles.title}>LiveLink | Login</h1>
 
-    return (
-        <>
-            <div className="main">
-                <div className="login-card">
-                    <h1>LiveLink | Login</h1>
-                    <div className="login-form">
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <input {...register('username')} required={true} placeholder='Username' />
-                            <br />
-                            <input {...register('password')} required={true} placeholder='Password' />
-                            <br />
-                            <div className="buttons">
-                                <button type='submit'>Login</button>
-                                <button onClick={handleNav}>Sign-up</button>
-                            </div>
-                        </form >
-                    </div >
-                </div>
-            </div>
-        </>
-    )
-}
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+          <input {...register('username')} required placeholder='Username' />
+          <input {...register('password')} required type="password" placeholder='Password' />
 
-export default Login
+          <div className={styles.buttons}>
+            <button type='submit'>Login</button>
+            <button onClick={handleNav}>Sign up</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
