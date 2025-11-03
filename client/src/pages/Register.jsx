@@ -14,7 +14,6 @@ const Register = () => {
       body: JSON.stringify(data)
     })
     const r = await res.json();
-    console.log(r);
   };
 
   const handleNav = (e) => {
