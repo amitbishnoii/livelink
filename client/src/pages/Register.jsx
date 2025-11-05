@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import styles from "../CSS/Register.module.css"; // ✅ use CSS module
+import SetupProfile from './Setup';
+import styles from "../CSS/Register.module.css";
 
 const Register = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  const [ userInfo, setuserInfo ] = useState([]);
 
   const onSubmit = async (data) => {
     const res = await fetch("http://localhost:3000/user/register", {
@@ -14,12 +16,20 @@ const Register = () => {
       body: JSON.stringify(data)
     })
     const r = await res.json();
+
+    setuserInfo(r.userDetails);
+    console.log(r.userDetails);
+    if (r.success) {
+      navigate("/setup", { state: { user: r.userDetails } });
+    }
   };
 
   const handleNav = (e) => {
     e.preventDefault();
     navigate("/login");
   };
+
+  
 
   return (
     <div className={styles.main}>

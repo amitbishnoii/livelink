@@ -19,7 +19,7 @@ export const registerUser = async (req, res) => {
                 email: email
             });
             const newuser = await user.save()
-            res.json({user, message: "User created!", success: true })
+            res.json({userDetails: user, message: "User created!", success: true })
         }
     } catch (error) {
 

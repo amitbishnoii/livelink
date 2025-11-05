@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "../CSS/Setup.css";
 import setupImg from "../assets/setup.jpg";
 import { GrLinkNext } from "react-icons/gr";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SetupProfile = () => {
-  const [showPage, setshowPage] = useState(false);
+  const location = useLocation();
+  const user = location.state?.user;
+  const [showPage, setShowPage] = useState(false);
+
+  useEffect(() => {
+    console.log("props received:", user);
+  }, [user]);
 
   return (
     <div className="main-page">
@@ -25,7 +32,7 @@ const SetupProfile = () => {
           >
             <img src={setupImg} alt="setup" />
             <p>Welcome to LiveLink</p>
-            <button onClick={() => setshowPage(true)}>
+            <button onClick={() => setShowPage(true)}>
               Get Started <GrLinkNext />
             </button>
           </motion.div>
@@ -41,7 +48,7 @@ const SetupProfile = () => {
             <h3>Setup Your Profile</h3>
             <form>
               <label>Username</label>
-              <input type="text"/>
+              <input type="text" placeholder="Username" defaultValue={user?.userName || ""} />
               <label>Bio</label>
               <textarea placeholder="Write something about you..." />
               <button type="submit">Continue</button>
