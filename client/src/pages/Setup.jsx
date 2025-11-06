@@ -12,9 +12,19 @@ const SetupProfile = () => {
   const [username, setusername] = useState(user?.userName || "");
   const [bio, setbio] = useState("");
 
-  const handleSubmit = async () => {
-    console.log(username);
-    console.log(bio);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(user.email);
+    console.log(user);
+    console.log('submitted successfully');
+
+    let res = await fetch("http://localhost:3000/user/updateInfo", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ bio: bio, username: username, emailID: user.email })
+    })
+    let r = await res.json()
+    console.log(r);
   }
 
   return (
