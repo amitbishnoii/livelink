@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import "../CSS/Setup.css";
 import setupImg from "../assets/setup.jpg";
@@ -9,10 +9,13 @@ const SetupProfile = () => {
   const location = useLocation();
   const user = location.state?.user;
   const [showPage, setShowPage] = useState(false);
+  const [username, setusername] = useState(user?.userName || "");
+  const [bio, setbio] = useState("");
 
-  useEffect(() => {
-    console.log("props received:", user);
-  }, [user]);
+  const handleSubmit = async () => {
+    console.log(username);
+    console.log(bio);
+  }
 
   return (
     <div className="main-page">
@@ -46,11 +49,11 @@ const SetupProfile = () => {
             transition={{ duration: 0.25 }}
           >
             <h3>Setup Your Profile</h3>
-            <form>
+            <form onSubmit={handleSubmit}>
               <label>Username</label>
-              <input type="text" placeholder="Username" defaultValue={user?.userName || ""} />
+              <input type="text" placeholder="Username" value={username} onChange={(e) => setusername(e.target.value)} />
               <label>Bio</label>
-              <textarea placeholder="Write something about you..." />
+              <input type="text" value={bio} placeholder="Enter Something" onChange={e => setbio(e.target.value)} />
               <button type="submit">Continue</button>
             </form>
           </motion.div>

@@ -19,9 +19,26 @@ export const registerUser = async (req, res) => {
                 email: email
             });
             const newuser = await user.save()
-            res.json({userDetails: user, message: "User created!", success: true })
+            res.json({ userDetails: user, message: "User created!", success: true })
         }
     } catch (error) {
 
+    }
+}
+
+export const updateUser = async (req, res) => {
+    try {
+        const { username, bio } = req.body;
+        const emailID = req.body;
+        const userExist = await User.findOne({ email: emailID });
+        if (userExist) {
+            await User.findOneAndUpdate({
+                bio: bio,
+                username: username,
+            })
+            res.json({ message: "User updated!", success: true })
+        }
+    } catch (error) {
+        res.json({ message: error, success: false})
     }
 }
