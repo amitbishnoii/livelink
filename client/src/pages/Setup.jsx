@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import "../CSS/Setup.css";
 import setupImg from "../assets/setup.jpg";
 import { GrLinkNext } from "react-icons/gr";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SetupProfile = () => {
@@ -12,6 +13,7 @@ const SetupProfile = () => {
   const [username, setusername] = useState(user?.userName || "");
   const [bio, setbio] = useState("");
   const [dob, setdob] = useState();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +24,9 @@ const SetupProfile = () => {
       body: JSON.stringify({ bio: bio, username: username, emailID: user.email, dob })
     })
     let r = await res.json()
+    if (r.success) {
+      navigate("/chat")
+    }
   }
 
   return (
