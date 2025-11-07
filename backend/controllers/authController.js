@@ -28,18 +28,21 @@ export const registerUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        const { username, bio } = req.body;
+        const { username, bio, dob } = req.body;
         const { emailID } = req.body;
         const userExist = await User.findOne({ email: emailID });
         if (userExist) {
             await User.findOneAndUpdate({email: emailID}, {
-                bio: bio,
-                username: username,
+                $set: {
+                    bio: bio,
+                    userName: username,
+                    DOB: dob,
+                }
             })
             res.json({ message: "User updated!", success: true })
         }
         else {
-            res.json({ message: "User not found!", success: false, emailas: emailID })
+            res.json({ message: "User not found!", success: false })
         }
     } catch (error) {
         res.json({ message: "server error", error: error, success: false})

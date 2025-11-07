@@ -22,6 +22,9 @@ const userSchema = new Schema({
     bio : {
         type: String,
     },
+    DOB: {
+        type: Date,
+    },
     email: {
         type: String,
         required: true,

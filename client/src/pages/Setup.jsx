@@ -11,20 +11,17 @@ const SetupProfile = () => {
   const [showPage, setShowPage] = useState(false);
   const [username, setusername] = useState(user?.userName || "");
   const [bio, setbio] = useState("");
+  const [dob, setdob] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(user.email);
-    console.log(user);
-    console.log('submitted successfully');
 
     let res = await fetch("http://localhost:3000/user/updateInfo", {
       method: "POST",
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ bio: bio, username: username, emailID: user.email })
+      body: JSON.stringify({ bio: bio, username: username, emailID: user.email, dob })
     })
     let r = await res.json()
-    console.log(r);
   }
 
   return (
@@ -64,6 +61,9 @@ const SetupProfile = () => {
               <input type="text" placeholder="Username" value={username} onChange={(e) => setusername(e.target.value)} />
               <label>Bio</label>
               <input type="text" value={bio} placeholder="Enter Something" onChange={e => setbio(e.target.value)} />
+              <label>Date of Birth</label>
+              <input type="date" value={dob} onChange={e => setdob(e.target.value)} />
+
               <button type="submit">Continue</button>
             </form>
           </motion.div>
