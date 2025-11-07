@@ -1,10 +1,18 @@
 .chat-main {
     display: flex;
     flex-direction: column;
-    background-color: black;
-    color: white;
+    background-color: #0b0b0b;
+    color: #f5f5f5;
     width: 100vw;
     height: 100vh;
+    font-family: 'Poppins', sans-serif;
+}
+
+h2 {
+    margin-left: 20px;
+    color: #ffffff;
+    font-weight: 600;
+    letter-spacing: 1px;
 }
 
 .content-main {
@@ -13,17 +21,114 @@
 }
 
 .left-bar {
-    background-color: red;
-    width: 20vw
+    background-color: #1a1a1a;
+    width: 20vw;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-right: 1px solid #2f2f2f;
+    overflow-y: auto;
+}
+
+.search-bar {
+    display: flex;
+    gap: 10px;
+}
+
+.friends-section {
+    margin-top: 30px;
+}
+
+.profile-card {
+    margin-top: 8px;
+    padding: 20px 25px;
+    background-color: #232323;
+    border-radius: 10px;
+    transition: background-color 0.25s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.profile-card:hover {
+    background-color: #2e2e2e;
+    transform: translateY(-2px);
+}
+
+.profile-card p {
+    margin: 0;
 }
 
 .center-main {
-    background-color: blue;
     width: 65vw;
+    background: radial-gradient(circle at top left, #1c1c1c, #0f0f0f);
+    backdrop-filter: blur(12px);
+    border-right: 1px solid #2f2f2f;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.center-main::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 20% 20%, rgba(35, 95, 224, 0.08), transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.07), transparent 40%);
+    z-index: 0;
+}
+
+.chat-content {
+    flex: 1;
+    overflow-y: auto;
+    z-index: 1;
+    padding: 20px;
+}
+
+input[type="text"], textarea {
+    flex: 1;
+    background-color: #1e1f22;
+    color: #f5f5f5;
+    border: 1px solid #2f2f2f;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+    transition: all 0.2s ease-in-out;
+}
+
+input[type="text"]:focus, textarea:focus {
+    outline: none;
+    border-color: #5865f2;
+    background-color: #2a2b30;
+    box-shadow: 0 0 8px rgba(88, 101, 242, 0.4);
+}
+
+button {
+    background-color: #5865f2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #4752c4;
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
 }
 
 .right-bar {
-    background-color: green;
+    background-color: #181818;
     width: 15vw;
+    padding: 10px;
+    border-left: 1px solid #2f2f2f;
 }
-
