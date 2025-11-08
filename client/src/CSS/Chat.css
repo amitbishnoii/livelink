@@ -97,6 +97,15 @@ h2 {
     justify-content: space-evenly;
 }
 
+.userinfo p {
+    margin: 2px;
+    font-size: large;
+}
+
+.userinfo span {
+    font-size: 12px;
+}
+
 .message-bar {
     display: flex;
     gap: 10px;
