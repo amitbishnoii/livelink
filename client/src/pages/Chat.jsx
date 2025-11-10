@@ -1,21 +1,18 @@
 import React from 'react'
 import "../CSS/Chat.css"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BsFillSendFill } from "react-icons/bs";
 import { IoIosAttach } from "react-icons/io";
+import { useLocation } from 'react-router-dom';
 
 const Chat = () => {
+    const location = useLocation();
+    const { user } = location.state;
     const [selectedUser, setselectedUser] = useState(null);
-    const [input, setinput] = useState();
+    const [input, setinput] = useState(null);
     const [message, setmessage] = useState();
     const [file, setfile] = useState();
     const [friend, setfriend] = useState([
-        {
-            "name": "avrit",
-            "username": "avrittoor",
-            "profile-pic": "https://imgs.search.brave.com/OeaPDkJ0ITqvZfJOZippVCiinWetnZAvuLEYObrzLPc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTI3/MDIxODIxMC9waG90/by9jbG9zZS11cC1j/b21wdXRlci1jb2Rl/LW9uLXNjcmVlbi5q/cGc_cz02MTJ4NjEy/Jnc9MCZrPTIwJmM9/QUl2bklmWG9Eangt/ZW11OG9rRWtpMTNa/MVpBZ1B1WnFBOFhU/al9hTC1tST0",
-            "bio": "a;ldfjas;ldkfj"
-        },
         {
             "name": "rahul",
             "profile-pic": "https://imgs.search.brave.com/uIAYlUlH1byPjJBYX21hhcvUgKxfGqwyYcTPLedl5MU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by9y/ZWQtdmVoaWNsZS1j/YXJfNDE3NzY3LTMz/My5qcGc_c2VtdD1h/aXNfaHlicmlkJnc9/NzQwJnE9ODA",
@@ -23,8 +20,10 @@ const Chat = () => {
     ]);
 
     const handleSend = () => {
-        setmessage(input);
-        setinput("");
+        if (input) {
+            setmessage(input);
+            setinput("");
+        }
     }
 
 
@@ -64,8 +63,11 @@ const Chat = () => {
                                     {message}
                                 </div>
                                 <div className="chat-window">
+                                    <div className="file-name">
+                                        {file ? <span>Attached File: {file?.name}</span> : ""}
+                                    </div>
                                     <div className="message-bar">
-                                        <input type="file" id='file-input' style={{ "display": "none" }} onChange={e => {setfile(e.target.files[0])}} />
+                                        <input type="file" id='file-input' style={{ "display": "none" }} onChange={e => { setfile(e.target.files[0]) }} />
 
                                         <button onClick={() => { document.getElementById("file-input").click() }} ><IoIosAttach size={20} /></button>
 

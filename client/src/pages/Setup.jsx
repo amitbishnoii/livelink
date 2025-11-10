@@ -4,6 +4,7 @@ import "../CSS/Setup.css";
 import setupImg from "../assets/setup.jpg";
 import { GrLinkNext } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 
 const SetupProfile = () => {
@@ -23,9 +24,10 @@ const SetupProfile = () => {
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ bio: bio, username: username, emailID: user.email, dob })
     })
+
     let r = await res.json()
     if (r.success) {
-      navigate("/chat")
+      navigate("/chat", { state: { user: username } })
     }
   }
 
