@@ -13,10 +13,7 @@ const Chat = () => {
     const [message, setmessage] = useState();
     const [file, setfile] = useState();
     const [friend, setfriend] = useState([
-        {
-            "name": "rahul",
-            "profile-pic": "https://imgs.search.brave.com/uIAYlUlH1byPjJBYX21hhcvUgKxfGqwyYcTPLedl5MU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by9y/ZWQtdmVoaWNsZS1j/YXJfNDE3NzY3LTMz/My5qcGc_c2VtdD1h/aXNfaHlicmlkJnc9/NzQwJnE9ODA",
-        },
+
     ]);
 
     const handleSend = () => {

@@ -1,4 +1,5 @@
 import User from "../models/User.js"
+import Friends from "../models/Friends.js"
 import bcrypt from "bcrypt"
 
 export const registerUser = async (req, res) => {
@@ -19,7 +20,11 @@ export const registerUser = async (req, res) => {
                 email: email
             });
             const newuser = await user.save()
-            res.json({ userDetails: user, message: "User created!", success: true })
+            const friendList = new Friends({
+                user: user._id,
+            })
+            const newfriendList = await friendList.save();
+            res.json({ userDetails: user,friends: newfriendList , message: "User created!", success: true })
         }
     } catch (error) {
 
