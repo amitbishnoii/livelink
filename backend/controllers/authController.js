@@ -24,7 +24,7 @@ export const registerUser = async (req, res) => {
                 user: user._id,
             })
             const newfriendList = await friendList.save();
-            res.json({ userDetails: user,friends: newfriendList , message: "User created!", success: true })
+            res.json({ userDetails: user, friends: newfriendList, message: "User created!", success: true })
         }
     } catch (error) {
 
@@ -37,7 +37,7 @@ export const updateUser = async (req, res) => {
         const { emailID } = req.body;
         const userExist = await User.findOne({ email: emailID });
         if (userExist) {
-            await User.findOneAndUpdate({email: emailID}, {
+            await User.findOneAndUpdate({ email: emailID }, {
                 $set: {
                     bio: bio,
                     userName: username,
@@ -50,6 +50,21 @@ export const updateUser = async (req, res) => {
             res.json({ message: "User not found!", success: false })
         }
     } catch (error) {
-        res.json({ message: "server error", error: error, success: false})
+        res.json({ message: "server error", error: error, success: false })
+    }
+}
+
+export const searchUser = async (req, res) => {
+    try {
+        const { username } = req.body;
+        const user = await User.findOne({ userName: username });
+        if (!user) {
+            res.json({ message: "User not found!", success: false })
+        }
+        else {
+            res.json({ userInfo: user, success: true })
+        }
+    } catch (error) {
+        res.json({ message: error, success: false })
     }
 }
