@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { BsFillSendFill } from "react-icons/bs";
 import { IoIosAttach } from "react-icons/io";
 import { useLocation } from 'react-router-dom';
+import { IoPersonAdd } from "react-icons/io5";
 
 const Chat = () => {
     const location = useLocation();
@@ -12,6 +13,7 @@ const Chat = () => {
     const [input, setinput] = useState(null);
     const [message, setmessage] = useState();
     const [file, setfile] = useState();
+    const [friendCard, setfriendCard] = useState(null);
     const [searchFriend, setsearchFriend] = useState();
     const [friend, setfriend] = useState([]);
 
@@ -26,7 +28,7 @@ const Chat = () => {
         console.log(searchFriend);
         const res = await fetch(`http://localhost:3000/user/searchUser?username=${searchFriend}`);
         const r = await res.json();
-        console.log(r);
+        setfriendCard(r.userInfo)
     }
 
     return (
@@ -40,6 +42,17 @@ const Chat = () => {
                             <input type="text" placeholder='Search by Username' value={searchFriend} onChange={e => setsearchFriend(e.target.value)} />
                             <button onClick={handleSearch}>Search</button>
                         </div>
+                        {setfriendCard ? (
+                            <div className="friend-card">
+                                <div className="friend-pic">
+                                </div>
+                                <div className="friend-info">
+                                    <p>{friendCard?.userName}</p>
+                                    <span>{friendCard?.firstName}</span>
+                                </div>
+                                <button><IoPersonAdd size={20} /></button>
+                            </div>
+                        ) : ("")}
                         <div className="friends-section">
                             {friend.map((info, i) => {
                                 return (

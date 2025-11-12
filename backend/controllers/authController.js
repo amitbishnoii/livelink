@@ -57,7 +57,7 @@ export const updateUser = async (req, res) => {
 export const searchUser = async (req, res) => {
     try {
         const { username } = req.query;
-        const user = await User.findOne({ userName: username });
+        const user = await User.findOne({ userName: username }).select("-password -__v");
         if (!user) {
             res.json({ message: "User not found!", success: false })
         }

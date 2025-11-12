@@ -34,6 +34,56 @@ h2 {
     gap: 10px;
 }
 
+.friend-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1e1e1e;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 6px 0;
+  color: #f5f5f5;
+}
+
+.friend-pic {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: #333;
+  flex-shrink: 0;
+}
+
+.friend-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+  flex-grow: 1;
+}
+
+.friend-info p {
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.friend-info span {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.friend-card button {
+  background: none;
+  border: none;
+  color: #bbb;
+  cursor: pointer;
+}
+
+.friend-card button:hover {
+  color: #fff;
+}
+
 .friends-section {
     margin-top: 30px;
 }
