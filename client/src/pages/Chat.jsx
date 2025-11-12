@@ -13,9 +13,7 @@ const Chat = () => {
     const [message, setmessage] = useState();
     const [file, setfile] = useState();
     const [searchFriend, setsearchFriend] = useState();
-    const [friend, setfriend] = useState([
-
-    ]);
+    const [friend, setfriend] = useState([]);
 
     const handleSend = () => {
         if (input) {
@@ -24,10 +22,12 @@ const Chat = () => {
         }
     }
 
-    const handleSearch = () => {
-        
+    const handleSearch = async () => {
+        console.log(searchFriend);
+        const res = await fetch(`http://localhost:3000/user/searchUser?username=${searchFriend}`);
+        const r = await res.json();
+        console.log(r);
     }
-
 
     return (
         <>
