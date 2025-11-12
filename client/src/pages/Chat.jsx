@@ -12,6 +12,7 @@ const Chat = () => {
     const [input, setinput] = useState(null);
     const [message, setmessage] = useState();
     const [file, setfile] = useState();
+    const [searchFriend, setsearchFriend] = useState();
     const [friend, setfriend] = useState([
 
     ]);
@@ -23,6 +24,10 @@ const Chat = () => {
         }
     }
 
+    const handleSearch = () => {
+        
+    }
+
 
     return (
         <>
@@ -32,8 +37,8 @@ const Chat = () => {
                     <div className="left-bar">
                         <h3>Messages</h3>
                         <div className="search-bar">
-                            <input type="text" placeholder='Search by Username' />
-                            <button>Search</button>
+                            <input type="text" placeholder='Search by Username' value={searchFriend} onChange={e => setsearchFriend(e.target.value)} />
+                            <button onClick={handleSearch}>Search</button>
                         </div>
                         <div className="friends-section">
                             {friend.map((info, i) => {
