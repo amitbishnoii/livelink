@@ -14,7 +14,7 @@ const Chat = () => {
     const [message, setmessage] = useState();
     const [file, setfile] = useState();
     const [friendCard, setfriendCard] = useState(null);
-    const [searchFriend, setsearchFriend] = useState();
+    const [searchFriend, setsearchFriend] = useState(null);
     const [friend, setfriend] = useState([]);
 
     const handleSend = () => {
@@ -32,8 +32,13 @@ const Chat = () => {
     }
 
     const handleAddFriend = async () => {
-        console.log(user._id);
-        console.log(friendCard?._id);
+        const res = await fetch("http://localhost:3000/user/friend/add", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({sender_id: user._id, rec_id: friendCard?._id})
+        })
+        const r = await res.json();
+        console.log(r);
     }
 
     return (
@@ -47,7 +52,7 @@ const Chat = () => {
                             <input type="text" placeholder='Search by Username' value={searchFriend} onChange={e => setsearchFriend(e.target.value)} />
                             <button onClick={handleSearch}>Search</button>
                         </div>
-                        {setfriendCard ? (
+                        {searchFriend ? (
                             <div className="friend-card">
                                 <div className="friend-pic">
                                 </div>
