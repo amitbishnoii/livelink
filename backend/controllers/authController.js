@@ -5,8 +5,8 @@ import bcrypt from "bcrypt"
 export const registerUser = async (req, res) => {
     try {
         const { userName, password, firstName, lastName, email } = req.body
-        const emailExist = await User.findOne({ email: email });
-        const userExist = await User.findOne({ userName: userName });
+        const emailExist = await User.findOne({ email: email }).select("-password -__v");
+        const userExist = await User.findOne({ userName: userName }).select("-password -__v");
         if (userExist) {
             res.json({ message: "Username already taken!", success: false })
         } else if (emailExist) {
@@ -35,7 +35,7 @@ export const updateUser = async (req, res) => {
     try {
         const { username, bio, dob } = req.body;
         const { emailID } = req.body;
-        const userExist = await User.findOne({ email: emailID });
+        const userExist = await User.findOne({ email: emailID }).select("-password -__v");
         if (userExist) {
             await User.findOneAndUpdate({ email: emailID }, {
                 $set: {
@@ -63,6 +63,27 @@ export const searchUser = async (req, res) => {
         }
         else {
             res.json({ userInfo: user, success: true })
+        }
+    } catch (error) {
+        res.json({ message: error, success: false })
+    }
+}
+
+export const addFriends = async (req, res) => {
+    try {
+        const { sender_id, rec_id } = req.body;
+        const sender = await User.findOne({ _id: sender_id });
+        const reciever = await User.findOne({ _id: rec_id });
+
+        if (sender_id === rec_id) {
+            res.json({ message: "Both IDs are Same!", success: false });
+        } else if (!sender || !reciever) {
+            res.json({ message: "User Dosen't Exist!", success: false });
+        } else {
+            const add_friend = await Friends.findOneAndUpdate({ user: sender_id }, {
+                $push: { friendList: rec_id }
+            })
+            res.json({ message: "friend added!", info: add_friend, success: true })
         }
     } catch (error) {
         res.json({ message: error, success: false })

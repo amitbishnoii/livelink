@@ -31,6 +31,11 @@ const Chat = () => {
         setfriendCard(r.userInfo)
     }
 
+    const handleAddFriend = async () => {
+        console.log(user._id);
+        console.log(friendCard?._id);
+    }
+
     return (
         <>
             <div className="chat-main">
@@ -50,7 +55,7 @@ const Chat = () => {
                                     <p>{friendCard?.userName}</p>
                                     <span>{friendCard?.firstName}</span>
                                 </div>
-                                <button><IoPersonAdd size={20} /></button>
+                                <button onClick={handleAddFriend}><IoPersonAdd size={20} /></button>
                             </div>
                         ) : ("")}
                         <div className="friends-section">
