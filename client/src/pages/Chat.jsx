@@ -32,9 +32,20 @@ const Chat = () => {
         setID(r.ID)
     }
 
+    const getFriends = async () => {
+
+    }
+
     useEffect(() => {
         getInfo();
     }, [])
+
+    useEffect(() => {
+        if (ID) {
+            getFriends();
+        }
+    }, [ID])
+
 
     const handleSearch = async () => {
         console.log(searchFriend);

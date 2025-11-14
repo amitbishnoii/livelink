@@ -7,7 +7,7 @@ const friendSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
-    friendList: [],
+    friendList: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 })
 
 export default mongoose.model("friends", friendSchema);

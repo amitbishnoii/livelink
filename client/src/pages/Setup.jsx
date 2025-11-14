@@ -27,7 +27,7 @@ const SetupProfile = () => {
 
     let r = await res.json()
     if (r.success) {
-      navigate("/chat", { state: { user } })
+      navigate("/chat", { state: { user: user.userName } })
     }
   }
 
