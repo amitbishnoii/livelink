@@ -33,7 +33,10 @@ const Chat = () => {
     }
 
     const getFriends = async () => {
-
+        const res = await fetch(`http://localhost:3000/friends/getFriends/${ID}`);
+        const r = await res.json();
+        setfriend(r.list);
+        console.log(r);
     }
 
     useEffect(() => {
@@ -55,8 +58,6 @@ const Chat = () => {
     }
 
     const handleAddFriend = async () => {
-        console.log('sender id: ', ID);
-        console.log('rec id: ', friendCard?._id);
         const res = await fetch("http://localhost:3000/friends/friend/add", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
@@ -93,7 +94,7 @@ const Chat = () => {
                                 return (
                                     <div key={i} className="profile-card" onClick={() => setselectedUser(info)}>
                                         <img src={info['profile-pic']} alt={info.name} className='profile-pic' />
-                                        <p>{info.name}</p>
+                                        <p>{info.firstName}</p>
                                     </div>
                                 );
                             })}
@@ -105,8 +106,8 @@ const Chat = () => {
                                 <div className="chat-profile">
                                     <img src={selectedUser["profile-pic"]} alt="" />
                                     <div className="userinfo">
-                                        <p>{selectedUser.name}</p>
-                                        <span>@{selectedUser.username}</span>
+                                        <p>{selectedUser.firstName}</p>
+                                        <span>@{selectedUser.userName}</span>
                                     </div>
                                 </div>
                                 <div className="messages">
@@ -133,7 +134,7 @@ const Chat = () => {
                         {selectedUser ? (
                             <div className="user-info">
                                 <img src={selectedUser["profile-pic"]} alt="" />
-                                <h5>{selectedUser.name}</h5>
+                                <h5>{selectedUser.firstName}</h5>
                                 <span>{selectedUser.bio}</span>
                             </div>
                         ) : ""}
