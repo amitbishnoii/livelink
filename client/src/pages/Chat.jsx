@@ -32,7 +32,7 @@ const Chat = () => {
     }
 
     const handleAddFriend = async () => {
-        const res = await fetch("http://localhost:3000/user/friend/add", {
+        const res = await fetch("http://localhost:3000/friends/friend/add", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({sender_id: user._id, rec_id: friendCard?._id})

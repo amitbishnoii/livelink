@@ -9,7 +9,7 @@ const Login = () => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data) => {
-    const res = await fetch("http://localhost:3000/user/login", {
+    const res = await fetch("http://localhost:3000/auth/login", {
       method: "POST",
       body: JSON.stringify(data),
       headers: { 'Content-Type': 'application/json' },
