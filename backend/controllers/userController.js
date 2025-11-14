@@ -1,4 +1,19 @@
-import User from "../models/User";
+import User from "../models/User.js";
+
+export const getUser = async (req, res) => {
+    try {
+        const { username } = req.params;
+        const info = await User.findOne({ userName: username });
+        if (!info) {
+            res.json({ message: "User not found!", success: false })
+        }
+        else {
+            res.json({ message: "User Found!", ID: info._id, success: true })
+        }
+    } catch (error) {
+        res.json({ message: "server error", error: error, success: false })
+    }
+}
 
 export const updateUser = async (req, res) => {
     try {

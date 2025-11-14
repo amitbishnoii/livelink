@@ -16,6 +16,7 @@ const Chat = () => {
     const [friendCard, setfriendCard] = useState(null);
     const [searchFriend, setsearchFriend] = useState(null);
     const [friend, setfriend] = useState([]);
+    const [ID, setID] = useState(null);
 
     const handleSend = () => {
         if (input) {
@@ -23,6 +24,17 @@ const Chat = () => {
             setinput("");
         }
     }
+
+    const getInfo = async () => {
+        console.log("username in chat: ", user);
+        const res = await fetch(`http://localhost:3000/user/getID/${user}`);
+        const r = await res.json();
+        setID(r.ID)
+    }
+
+    useEffect(() => {
+        getInfo();
+    }, [])
 
     const handleSearch = async () => {
         console.log(searchFriend);
@@ -32,10 +44,12 @@ const Chat = () => {
     }
 
     const handleAddFriend = async () => {
+        console.log('sender id: ', ID);
+        console.log('rec id: ', friendCard?._id);
         const res = await fetch("http://localhost:3000/friends/friend/add", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({sender_id: user._id, rec_id: friendCard?._id})
+            body: JSON.stringify({ sender_id: ID, rec_id: friendCard?._id })
         })
         const r = await res.json();
         console.log(r);
