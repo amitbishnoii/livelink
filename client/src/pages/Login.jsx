@@ -8,8 +8,16 @@ const Login = () => {
 
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const res = await fetch("http://localhost:3000/user/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const r = await res.json();
+    if (r.success) {
+      navigate("/chat", { state: { user: r.Username } })
+    }
   };
 
   const handleNav = (e) => {

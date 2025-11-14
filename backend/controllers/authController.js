@@ -31,6 +31,24 @@ export const registerUser = async (req, res) => {
     }
 }
 
+export const loginUser = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await User.findOne({ userName: username });
+        if (!user) {
+            res.json({ message: "Username not Found!", success: false })
+        } else {
+            if (user.password === password) {
+                res.json({ message: "Login Success", Username: user.userName, success: true })
+            } else {
+                res.json({ message: "Wrong Password!", success: false })
+            }
+        }
+    } catch (error) {
+        res.json({ message: "server error", error: error, success: false })
+    }
+}
+
 export const updateUser = async (req, res) => {
     try {
         const { username, bio, dob } = req.body;
@@ -77,7 +95,7 @@ export const addFriends = async (req, res) => {
         const reciever = await User.findOne({ _id: rec_id });
 
         if (sender_friends.friendList.includes(rec_id)) {
-            res.json({ message: "Both user are already friends!", success: null});
+            res.json({ message: "Both user are already friends!", success: null });
         } else if (sender_id === rec_id) {
             res.json({ message: "Both IDs are Same!", success: false });
         } else if (!sender || !reciever) {
