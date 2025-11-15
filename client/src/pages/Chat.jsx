@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import "../CSS/Chat.css"
 import { useState, useEffect } from 'react'
 import { BsFillSendFill } from "react-icons/bs";
 import { IoIosAttach } from "react-icons/io";
 import { useLocation } from 'react-router-dom';
 import { IoPersonAdd } from "react-icons/io5";
+import { io } from "socket.io-client"
 
 const Chat = () => {
+    const socket = useRef(null)
     const location = useLocation();
     const { user } = location.state;
     const [selectedUser, setselectedUser] = useState(null);
@@ -40,7 +42,23 @@ const Chat = () => {
     }
 
     useEffect(() => {
-        getInfo();
+      getInfo();
+    }, [])
+
+    useEffect(() => {
+        console.log('useeffect trigerred: ', user);
+        socket.current = io("http://localhost:3000");
+        console.log("connected to socket.");
+
+        socket.current.on("connect", () => {
+            console.log("Frontend socket ID:", socket.current.id);
+        });
+
+        socket.current.emit("addUser", user._id)
+
+        return () => {
+            socket.current.disconnect();
+        };
     }, [])
 
     useEffect(() => {
