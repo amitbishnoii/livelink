@@ -20,15 +20,7 @@ const Chat = () => {
     const [friend, setfriend] = useState([]);
     const [ID, setID] = useState(null);
 
-    const handleSend = () => {
-        if (input) {
-            setmessage(input);
-            setinput("");
-        }
-    }
-
     const getInfo = async () => {
-        console.log("username in chat: ", user);
         const res = await fetch(`http://localhost:3000/user/getID/${user}`);
         const r = await res.json();
         setID(r.ID)
@@ -38,7 +30,6 @@ const Chat = () => {
         const res = await fetch(`http://localhost:3000/friends/getFriends/${ID}`);
         const r = await res.json();
         setfriend(r.list);
-        console.log(r);
     }
 
     useEffect(() => {
@@ -46,7 +37,7 @@ const Chat = () => {
     }, [])
 
     useEffect(() => {
-        console.log('useeffect trigerred: ', user);
+        if (!ID) return;
         socket.current = io("http://localhost:3000");
         console.log("connected to socket.");
 
@@ -54,19 +45,30 @@ const Chat = () => {
             console.log("Frontend socket ID:", socket.current.id);
         });
 
-        socket.current.emit("addUser", user._id)
+        socket.current.emit("addUser", ID)
 
         return () => {
             socket.current.disconnect();
         };
-    }, [])
+    }, [ID])
 
     useEffect(() => {
         if (ID) {
             getFriends();
         }
     }, [ID])
-
+    
+    const handleSend = () => {
+        if (input) {
+            setmessage(input);
+            setinput("");
+            socket.current.emit("sendMessage", {
+                senderID: ID,
+                recID: selectedUser._id,
+                Message: message
+            })
+        }
+    }
 
     const handleSearch = async () => {
         console.log(searchFriend);

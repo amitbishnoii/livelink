@@ -30,10 +30,14 @@ connectDB();
 io.on("connection", (socket) => {
     let onlineUsers = {}
     console.log("new connection at ", socket.id);
-    
+
     socket.on("addUser", (userId) => {
         onlineUsers[userId] = socket.id;
         console.log('online users: ', onlineUsers);
+    })
+
+    socket.on("sendMessage", ({senderID, recID, Message}) => {
+        console.log(`message recieved from ${senderID}, sent to ${recID}, message is ${Message}`);
     })
 })
 
