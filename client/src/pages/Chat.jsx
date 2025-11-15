@@ -33,7 +33,7 @@ const Chat = () => {
     }
 
     useEffect(() => {
-      getInfo();
+        getInfo();
     }, [])
 
     useEffect(() => {
@@ -47,6 +47,10 @@ const Chat = () => {
 
         socket.current.emit("addUser", ID)
 
+        socket.current.on("recMessage", (msg) => {
+            console.log('message received from backend: ', msg);
+        })
+
         return () => {
             socket.current.disconnect();
         };
@@ -57,7 +61,7 @@ const Chat = () => {
             getFriends();
         }
     }, [ID])
-    
+
     const handleSend = () => {
         if (input) {
             setmessage(input);

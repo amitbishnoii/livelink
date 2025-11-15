@@ -7,6 +7,7 @@ import friendRoute from "./routes/friendRoute.js"
 import userRoute from "./routes/userRoute.js"
 import { Server } from "socket.io";
 import http from "http"
+import { saveMessage } from "./controllers/messageController.js";
 
 dotenv.config()
 const app = express();
@@ -36,8 +37,17 @@ io.on("connection", (socket) => {
         console.log('online users: ', onlineUsers);
     })
 
-    socket.on("sendMessage", ({senderID, recID, Message}) => {
-        console.log(`message recieved from ${senderID}, sent to ${recID}, message is ${Message}`);
+    socket.on("sendMessage", async (data) => {
+        const savedMessage = await saveMessage(data);
+
+        console.log(data.Message);
+
+        const recuserID = onlineUsers[data.recID];
+        console.log(recuserID);
+        if (recuserID) {
+            console.log('rec Triggered');
+            io.to(recuserID).emit("recMessage", savedMessage)
+        }
     })
 })
 
