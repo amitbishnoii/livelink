@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from "../CSS/Login.module.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
+  const [error, seterror] = useState();
 
   const { register, handleSubmit } = useForm();
 
@@ -17,6 +18,8 @@ const Login = () => {
     const r = await res.json();
     if (r.success) {
       navigate("/chat", { state: { user: r.Username } })
+    } else {
+      seterror(r.message);
     }
   };
 
@@ -33,6 +36,7 @@ const Login = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <input {...register('username')} required placeholder='Username' />
           <input {...register('password')} required type="password" placeholder='Password' />
+          {error ? <p className='error-message'>{error}</p> : <p></p>}
 
           <div className={styles.buttons}>
             <button type='submit'>Login</button>

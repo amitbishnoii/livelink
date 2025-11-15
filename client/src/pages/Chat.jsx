@@ -64,7 +64,9 @@ const Chat = () => {
             body: JSON.stringify({ sender_id: ID, rec_id: friendCard?._id })
         })
         const r = await res.json();
-        console.log(r);
+        if (r.success) {
+            window.location.reload()
+        }
     }
 
     return (
