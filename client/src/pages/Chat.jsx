@@ -48,6 +48,14 @@ const Chat = () => {
         console.log('user ID: ', ID);
         socket.current.emit("addUser", ID)
 
+        socket.current.on("save-message", (data) => {
+            console.log('message saved in the backend: ', data);
+        })
+        socket.current.on("message-confirm", (Data) => {
+            console.log('message-confirm fired');
+            console.log('bro: ', Data);
+        })
+
         return () => {
             socket.current.disconnect();
         };
@@ -71,13 +79,6 @@ const Chat = () => {
                 senderID: ID,
                 recID: selectedUser._id,
                 Message: currentMSG,
-            })
-            socket.current.on("save-message", (data) => {
-                console.log('message saved in the backend: ', data);
-            })
-            socket.current.on("message-confirm", (Data) => {
-                console.log('message-confirm fired');
-                console.log('bro: ', Data);
             })
         }
     }
