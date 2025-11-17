@@ -47,10 +47,6 @@ const Chat = () => {
 
         socket.current.emit("addUser", ID)
 
-        socket.current.on("recMessage", (msg) => {
-            console.log('message received from backend: ', msg);
-        })
-
         return () => {
             socket.current.disconnect();
         };
@@ -70,6 +66,9 @@ const Chat = () => {
                 senderID: ID,
                 recID: selectedUser._id,
                 Message: message
+            })
+            socket.current.on("save-message", (data) => {
+                console.log('message saved in the backend: ', data);
             })
         }
     }

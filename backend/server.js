@@ -38,16 +38,16 @@ io.on("connection", (socket) => {
     })
 
     socket.on("sendMessage", async (data) => {
+        const sentid = onlineUsers[data.recID]
         const savedMessage = await saveMessage(data);
+        console.log("message recieved from frontend: ", data);
+        socket.emit("save-message", {
+            status: "ok",
+            message: "message saved hell",
+            sentID: sentid
+        })
 
-        console.log(data.Message);
 
-        const recuserID = onlineUsers[data.recID];
-        console.log(recuserID);
-        if (recuserID) {
-            console.log('rec Triggered');
-            io.to(recuserID).emit("recMessage", savedMessage)
-        }
     })
 })
 
