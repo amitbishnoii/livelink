@@ -45,6 +45,7 @@ const Chat = () => {
             console.log("Frontend socket ID:", socket.current.id);
         });
 
+        console.log('user ID: ', ID);
         socket.current.emit("addUser", ID)
 
         return () => {
@@ -60,15 +61,23 @@ const Chat = () => {
 
     const handleSend = () => {
         if (input) {
+            const currentMSG = input;
             setmessage(input);
             setinput("");
+            console.log('id sent to backend: ', ID);
+            console.log('red id sent to backend: ', selectedUser._id);
+            console.log('message sent to backend: ', message);
             socket.current.emit("sendMessage", {
                 senderID: ID,
                 recID: selectedUser._id,
-                Message: message
+                Message: currentMSG,
             })
             socket.current.on("save-message", (data) => {
                 console.log('message saved in the backend: ', data);
+            })
+            socket.current.on("message-confirm", (Data) => {
+                console.log('message-confirm fired');
+                console.log('bro: ', Data);
             })
         }
     }

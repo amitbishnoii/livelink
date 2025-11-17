@@ -28,23 +28,30 @@ app.use("/friends", friendRoute)
 
 connectDB();
 
+const onlineUsers = {}
 io.on("connection", (socket) => {
-    let onlineUsers = {}
     console.log("new connection at ", socket.id);
 
     socket.on("addUser", (userId) => {
         onlineUsers[userId] = socket.id;
+        console.log('adduser trigerred');
         console.log('online users: ', onlineUsers);
     })
 
     socket.on("sendMessage", async (data) => {
-        const sentid = onlineUsers[data.recID]
-        const savedMessage = await saveMessage(data);
-        console.log("message recieved from frontend: ", data);
+        console.log('data from frontend: ', data);
+        const save = saveMessage(data)
         socket.emit("save-message", {
             status: "ok",
-            message: "message saved hell",
-            sentID: sentid
+            message: "message saved",
+            content: save,
+        })
+        console.log('online users: ', onlineUsers);
+        const socketID = onlineUsers[data.recID]
+        console.log('receiver socket id: ', socketID);
+        io.to(socketID).emit("message-confirm", {
+            message: "avrit didnt messaged you",
+            content: data.Message,
         })
 
 
