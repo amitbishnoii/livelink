@@ -110,7 +110,7 @@ const Chat = () => {
                     <div className="left-bar">
                         <h3>Messages</h3>
                         <div className="search-bar">
-                            <input type="text" placeholder='Search by Username' value={searchFriend} onChange={e => setsearchFriend(e.target.value)} />
+                            <input type="text" placeholder='Search by Username' value={searchFriend || ""} onChange={e => setsearchFriend(e.target.value)} />
                             <button onClick={handleSearch}>Search</button>
                         </div>
                         {searchFriend ? (
@@ -157,7 +157,7 @@ const Chat = () => {
 
                                         <button onClick={() => { document.getElementById("file-input").click() }} ><IoIosAttach size={20} /></button>
 
-                                        <input type="text" placeholder='Message...' value={input} onChange={e => setinput(e.target.value)} />
+                                        <input type="text" placeholder='Message...' value={input || ""} onChange={e => setinput(e.target.value)} />
 
                                         <button onClick={handleSend}><BsFillSendFill /></button>
                                     </div>
