@@ -151,19 +151,41 @@ h2 {
     align-items: center;
 }
 
+.message-bubble {
+    max-width: 40%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #eaeaea;
+    background: #2b2d31;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap; 
+}
+
 .right-align {
-    color: black;
+    position: relative;
+    z-index: 10;
     margin-left: auto;
-    background-color: #dcf8c6;
-    text-align: right;
+    background: #5865f2;
+    color: white;
+    text-align: left;
+    border-radius: 10px;
+    margin-bottom: 5px;
 }
 
 .left-align {
-    color: black;
+    
+    position: relative;
+    z-index: 10;
     margin-right: auto;
-    background-color: #ffffff;
-    text-align: left;
-    border: 1px solid #ddd;
+    background: #36393f;
+    color: #e5e5e5;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 5px;
 }
 
 .message-window {

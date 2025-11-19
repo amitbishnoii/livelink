@@ -146,7 +146,7 @@ const Chat = () => {
                                 <div className="chat-window">
                                     <div className="message-window">
                                         {messages.map((text, id) => {
-                                            return <div key={id} className={ text.id === ID ? "right-align" : "left-align" }>
+                                            return <div key={id} className={`message-bubble ${text.id === ID ? "right-align" : "left-align"}`}>
                                                 {text.content}
                                             </div>
                                         })}
