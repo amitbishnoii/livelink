@@ -53,9 +53,8 @@ const Chat = () => {
             console.log('message saved in the backend: ', data);
         })
         socket.current.on("receive-message", (Data) => {
-            console.log('message-confirm fired');
             console.log('bro: ', Data);
-            setmessages(prev => [...prev, Data.content]);
+            setmessages(prev => [...prev, Data]);
         })
 
         return () => {
@@ -147,7 +146,9 @@ const Chat = () => {
                                 <div className="chat-window">
                                     <div className="message-window">
                                         {messages.map((text, id) => {
-                                            return <div key={id}>{text}</div>
+                                            return <div key={id} className={ text.id === ID ? "right-align" : "left-align" }>
+                                                {text.content}
+                                            </div>
                                         })}
                                     </div>
                                     <div className="file-name">

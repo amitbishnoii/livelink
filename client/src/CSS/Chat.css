@@ -151,6 +151,14 @@ h2 {
     align-items: center;
 }
 
+.right-align {
+    background-color: red;
+}
+
+.left-align {
+    background-color: blue;
+}
+
 .message-window {
     height: 100%;
     width: 100%;

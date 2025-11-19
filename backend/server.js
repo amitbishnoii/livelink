@@ -39,19 +39,18 @@ io.on("connection", (socket) => {
     })
 
     socket.on("sendMessage", async (data) => {
-        console.log('data from frontend: ', data);
         const save = await saveMessage(data)
         socket.emit("save-message", {
             status: "ok",
             message: "message saved",
             content: save.content,
         })
-        console.log('online users: ', onlineUsers);
         const socketID = onlineUsers[data.recID]
         const socketIDofSender = onlineUsers[data.senderID]
         console.log('receiver socket id: ', socketID);
+        console.log('sender socket id: ', socketIDofSender);
         io.to(socketID).emit("receive-message", {
-            id: data.recID,
+            id: data.senderID,
             content: data.Message,
         })
         io.to(socketIDofSender).emit("receive-message", {
