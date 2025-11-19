@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import cloudinary from "../config/cloudinary.js";
 
 export const getUser = async (req, res) => {
     try {
@@ -10,6 +11,14 @@ export const getUser = async (req, res) => {
         else {
             res.json({ message: "User Found!", ID: info._id, success: true })
         }
+    } catch (error) {
+        res.json({ message: "server error", error: error, success: false })
+    }
+}
+
+export const uploadPic = async (req, res) => {
+    try {
+        const { pic } = req.file;
     } catch (error) {
         res.json({ message: "server error", error: error, success: false })
     }
