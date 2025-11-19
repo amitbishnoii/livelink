@@ -19,6 +19,7 @@ const Chat = () => {
     const [searchFriend, setsearchFriend] = useState(null);
     const [friend, setfriend] = useState([]);
     const [ID, setID] = useState(null);
+    const [messages, setmessages] = useState([]);
 
     const getInfo = async () => {
         const res = await fetch(`http://localhost:3000/user/getID/${user}`);
@@ -51,9 +52,10 @@ const Chat = () => {
         socket.current.on("save-message", (data) => {
             console.log('message saved in the backend: ', data);
         })
-        socket.current.on("message-confirm", (Data) => {
+        socket.current.on("receive-message", (Data) => {
             console.log('message-confirm fired');
             console.log('bro: ', Data);
+            setmessages(prev => [...prev, Data.content]);
         })
 
         return () => {
@@ -72,9 +74,6 @@ const Chat = () => {
             const currentMSG = input;
             setmessage(input);
             setinput("");
-            console.log('id sent to backend: ', ID);
-            console.log('red id sent to backend: ', selectedUser._id);
-            console.log('message sent to backend: ', message);
             socket.current.emit("sendMessage", {
                 senderID: ID,
                 recID: selectedUser._id,
@@ -145,10 +144,12 @@ const Chat = () => {
                                         <span>@{selectedUser.userName}</span>
                                     </div>
                                 </div>
-                                <div className="messages">
-                                    {message}
-                                </div>
                                 <div className="chat-window">
+                                    <div className="message-window">
+                                        {messages.map((text, id) => {
+                                            return <div key={id}>{text}</div>
+                                        })}
+                                    </div>
                                     <div className="file-name">
                                         {file ? <span>Attached File: {file?.name}</span> : ""}
                                     </div>
