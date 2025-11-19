@@ -1,5 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
+dotenv.config()
 import connectDB from "./config/db.js";
 import cors from "cors"
 import authRoute from "./routes/authRoute.js";
@@ -8,8 +9,8 @@ import userRoute from "./routes/userRoute.js"
 import { Server } from "socket.io";
 import http from "http"
 import { saveMessage } from "./controllers/messageController.js";
+import "./config/cloudinary.js"
 
-dotenv.config()
 const app = express();
 const server = http.createServer(app);
 const port = 3000;
