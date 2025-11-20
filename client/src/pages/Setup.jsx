@@ -15,17 +15,24 @@ const SetupProfile = () => {
   const [bio, setbio] = useState("");
   const [dob, setdob] = useState();
   const navigate = useNavigate();
+  const [pic, setpic] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData()
+    formData.append("image", pic);
+    formData.append("bio", bio);
+    formData.append("username", username);
+    formData.append("emailID", user.email);
+    formData.append("dob", dob);
 
     let res = await fetch("http://localhost:3000/user/updateInfo", {
       method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ bio: bio, username: username, emailID: user.email, dob })
+      body: formData
     })
 
     let r = await res.json()
+    console.log(r);
     if (r.success) {
       navigate("/chat", { state: { user: user.userName } })
     }
@@ -64,6 +71,8 @@ const SetupProfile = () => {
           >
             <h3>Setup Your Profile</h3>
             <form onSubmit={handleSubmit}>
+              <label htmlFor="">Choose you Profile Picture</label>
+              <input type="file" name="image" accept="image/*" onChange={e => setpic(e.target.files[0])}/>
               <label>Username</label>
               <input type="text" placeholder="Username" value={username} onChange={(e) => setusername(e.target.value)} />
               <label>Bio</label>

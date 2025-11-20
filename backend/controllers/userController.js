@@ -16,28 +16,34 @@ export const getUser = async (req, res) => {
     }
 }
 
-export const uploadPic = async (req, res) => {
-    try {
-        const { pic } = req.file;
-    } catch (error) {
-        res.json({ message: "server error", error: error, success: false })
-    }
-}
-
 export const updateUser = async (req, res) => {
     try {
-        const { username, bio, dob } = req.body;
-        const { emailID } = req.body;
+        const { username, bio, dob, emailID } = req.body;
+        
         const userExist = await User.findOne({ email: emailID }).select("-password -__v");
-        if (userExist) {
-            await User.findOneAndUpdate({ email: emailID }, {
+        let pic_url = null
+
+        console.log('file we got here is: ', req.file);
+        console.log('user we got: ', userExist);
+        if (req.file) {
+            const upload = cloudinary.uploader.upload(req.file.path, {
+                folder: "profile_pictures"
+            })
+            pic_url = (await upload).secure_url
+        }
+
+
+        else if (userExist) {
+            const asdf = await User.findOneAndUpdate({ email: emailID }, {
                 $set: {
                     bio: bio,
                     userName: username,
                     DOB: dob,
+                    profilePic: pic_url,
                 }
             })
-            res.json({ message: "User updated!", success: true })
+            console.log('use created in the backend!');
+            res.json({ message: "User updated!", success: true, profilepicURL: asdf.profilePic })
         }
         else {
             res.json({ message: "User not found!", success: false })

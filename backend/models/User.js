@@ -25,6 +25,10 @@ const userSchema = new Schema({
     DOB: {
         type: Date,
     },
+    profilePic: {
+        type: String,
+        default: ""
+    },
     email: {
         type: String,
         required: true,
