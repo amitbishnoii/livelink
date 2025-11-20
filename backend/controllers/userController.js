@@ -19,7 +19,7 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const { username, bio, dob, emailID } = req.body;
-        
+
         const userExist = await User.findOne({ email: emailID }).select("-password -__v");
         let pic_url = null
 
@@ -30,24 +30,26 @@ export const updateUser = async (req, res) => {
                 folder: "profile_pictures"
             })
             pic_url = (await upload).secure_url
-        }
-
-
-        else if (userExist) {
-            const asdf = await User.findOneAndUpdate({ email: emailID }, {
-                $set: {
-                    bio: bio,
-                    userName: username,
-                    DOB: dob,
-                    profilePic: pic_url,
-                }
-            })
-            console.log('use created in the backend!');
-            res.json({ message: "User updated!", success: true, profilepicURL: asdf.profilePic })
+            if (userExist) {
+                const asdf = await User.findOneAndUpdate({ email: emailID }, {
+                    $set: {
+                        bio: bio,
+                        userName: username,
+                        DOB: dob,
+                        profilePic: pic_url,
+                    }
+                })
+                console.log('use created in the backend!');
+                res.json({ message: "User updated!", success: true, profilepicURL: asdf.profilePic })
+            }
+            else {
+                res.json({ message: "User not found!", success: false })
+            }
         }
         else {
-            res.json({ message: "User not found!", success: false })
+            res.json({ message: "file not found!", success: false })
         }
+
     } catch (error) {
         res.json({ message: "server error", error: error, success: false })
     }
