@@ -4,8 +4,8 @@ import User from "../models/User.js";
 export const addFriends = async (req, res) => {
     try {
         const { sender_id, rec_id } = req.body;
-        const sender = await User.findOne({ _id: sender_id });
-        const sender_friends = await Friends.findOne({ user: sender_id });
+        const sender = await User.findOne({ _id: sender_id }).select("-password -__v");
+        const sender_friends = await Friends.findOne({ user: sender_id }).select("-password -__v");
         const reciever = await User.findOne({ _id: rec_id });
         console.log(sender_friends);
 

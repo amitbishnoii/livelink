@@ -4,12 +4,12 @@ import cloudinary from "../config/cloudinary.js";
 export const getUser = async (req, res) => {
     try {
         const { username } = req.params;
-        const info = await User.findOne({ userName: username });
+        const info = await User.findOne({ userName: username }).select("-password -__v");
         if (!info) {
             res.json({ message: "User not found!", success: false })
         }
         else {
-            res.json({ message: "User Found!", ID: info._id, success: true })
+            res.json({ message: "User Found!", ID: info._id, userINFO: info, success: true })
         }
     } catch (error) {
         res.json({ message: "server error", error: error, success: false })

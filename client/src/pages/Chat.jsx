@@ -2,7 +2,6 @@ import React, { useRef } from 'react'
 import "../CSS/Chat.css"
 import { useState, useEffect } from 'react'
 import { BsFillSendFill } from "react-icons/bs";
-import { IoIosAttach } from "react-icons/io";
 import { useLocation } from 'react-router-dom';
 import { IoPersonAdd } from "react-icons/io5";
 import { io } from "socket.io-client"
@@ -14,17 +13,26 @@ const Chat = () => {
     const [selectedUser, setselectedUser] = useState(null);
     const [input, setinput] = useState(null);
     const [message, setmessage] = useState();
-    const [file, setfile] = useState();
     const [friendCard, setfriendCard] = useState(null);
     const [searchFriend, setsearchFriend] = useState(null);
     const [friend, setfriend] = useState([]);
     const [ID, setID] = useState(null);
     const [messages, setmessages] = useState([]);
+    const [currentUser, setcurrentUser] = useState([]);
+    const [currentChatInfo, setcurrentChatInfo] = useState([])
 
     const getInfo = async () => {
         const res = await fetch(`http://localhost:3000/user/getID/${user}`);
         const r = await res.json();
         setID(r.ID)
+        setcurrentUser(prev => [...prev, r.userINFO])
+    }
+
+    const getFriendInfo = async () => {
+        const res = await fetch(`http://localhost:3000/user/getID/${selectedUser?.userName}`);
+        const r = await res.json();
+        console.log('info got from backend in getFriendInfo: ', r);
+        setcurrentChatInfo(r.userINFO);
     }
 
     const getFriends = async () => {
@@ -67,6 +75,11 @@ const Chat = () => {
             getFriends();
         }
     }, [ID])
+
+    useEffect(() => {
+        getFriendInfo()
+    }, [selectedUser])
+
 
     const handleSend = () => {
         if (input) {
@@ -133,11 +146,13 @@ const Chat = () => {
                             })}
                         </div>
                     </div>
+
+
                     <div className="center-main">
                         {selectedUser ? (
                             <>
                                 <div className="chat-profile">
-                                    <img src={selectedUser["profile-pic"]} alt="" />
+                                    <img src={currentChatInfo["profilePic"]} alt="" />
                                     <div className="userinfo">
                                         <p>{selectedUser.firstName}</p>
                                         <span>@{selectedUser.userName}</span>
@@ -151,14 +166,7 @@ const Chat = () => {
                                             </div>
                                         })}
                                     </div>
-                                    <div className="file-name">
-                                        {file ? <span>Attached File: {file?.name}</span> : ""}
-                                    </div>
                                     <div className="message-bar">
-                                        <input type="file" id='file-input' style={{ "display": "none" }} onChange={e => { setfile(e.target.files[0]) }} />
-
-                                        <button onClick={() => { document.getElementById("file-input").click() }} ><IoIosAttach size={20} /></button>
-
                                         <input type="text" placeholder='Message...' value={input || ""} onChange={e => setinput(e.target.value)} />
 
                                         <button onClick={handleSend}><BsFillSendFill /></button>
@@ -167,10 +175,12 @@ const Chat = () => {
                             </>
                         ) : ""}
                     </div>
+
+
                     <div className="right-bar">
                         {selectedUser ? (
                             <div className="user-info">
-                                <img src={selectedUser["profile-pic"]} alt="" />
+                                <img src={currentChatInfo["profilePic"]} alt="" />
                                 <h5>{selectedUser.firstName}</h5>
                                 <span>{selectedUser.bio}</span>
                             </div>
