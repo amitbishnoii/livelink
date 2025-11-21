@@ -24,6 +24,7 @@ const Chat = () => {
     const getInfo = async () => {
         const res = await fetch(`http://localhost:3000/user/getID/${user}`);
         const r = await res.json();
+        console.log('getInfo ran! ID is: ', r);
         setID(r.ID)
         setcurrentUser(prev => [...prev, r.userINFO])
     }
@@ -136,14 +137,14 @@ const Chat = () => {
                             </div>
                         ) : ("")}
                         <div className="friends-section">
-                            {friend.map((info, i) => {
+                            {(friend.map((info, i) => {
                                 return (
                                     <div key={i} className="profile-card" onClick={() => setselectedUser(info)}>
-                                        <img src={info['profile-pic']} alt={info.name} className='profile-pic' />
+                                        <img src={info.profilePic} alt={info.name} className='profile-pic' />
                                         <p>{info.firstName}</p>
                                     </div>
                                 );
-                            })}
+                            }))}
                         </div>
                     </div>
 
@@ -152,7 +153,7 @@ const Chat = () => {
                         {selectedUser ? (
                             <>
                                 <div className="chat-profile">
-                                    <img src={currentChatInfo["profilePic"]} alt="" />
+                                    <img src={currentChatInfo ? currentChatInfo['profilePic'] : ""} alt="" />
                                     <div className="userinfo">
                                         <p>{selectedUser.firstName}</p>
                                         <span>@{selectedUser.userName}</span>
@@ -179,15 +180,17 @@ const Chat = () => {
 
                     <div className="right-bar">
                         {selectedUser ? (
-                            <div className="user-info">
-                                <img src={currentChatInfo["profilePic"]} alt="" />
-                                <h5>{selectedUser.firstName}</h5>
-                                <span>{selectedUser.bio}</span>
-                            </div>
+                            currentChatInfo ? (
+                                <div className="user-info" >
+                                    <img src={currentChatInfo["profilePic"]} alt="" />
+                                    <h5>{selectedUser.firstName}</h5>
+                                    <span>{selectedUser.bio}</span>
+                                </div>
+                            ) : ""
                         ) : ""}
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }
