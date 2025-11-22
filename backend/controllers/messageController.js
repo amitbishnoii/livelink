@@ -16,8 +16,14 @@ export const saveMessage = async (data) => {
 export const getMessage = async (req, res) => {
     try {
         const { senderID, recID } = req.params;
-        const chat = await Message.findOne({ sender: senderID, receiver: recID })
-        res.json({ messages: chat, success: true })
+        const chat = await Message.find({
+            $or: [
+                { sender: senderID, receiver: recID },
+                { sender: recID, receiver: senderID },
+            ]
+        }).select("content date")
+            .sort({ date: 1 })
+        res.json({ messages: chat, asdf: chat.content, success: true })
     } catch (error) {
         res.json({ message: error, success: false })
     }
