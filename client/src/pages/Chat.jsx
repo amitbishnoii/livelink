@@ -62,7 +62,7 @@ const Chat = () => {
             if (!sen || !rec) return;
             const res = await fetch(`http://localhost:3000/message/getMessage/${sen}/${rec}`);
             const r = await res.json();
-            console.log(r);
+            setMessages(r.messages)
         } catch (error) {
             console.log('getMessages error: ', error);
         }
