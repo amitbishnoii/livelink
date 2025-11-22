@@ -230,9 +230,10 @@ const Chat = () => {
                                     {messages.map((text, idx) => (
                                         <div
                                             key={idx}
-                                            className={`message-bubble ${String(text.id) === String(ID) ? "right-align" : "left-align"}`}
+                                            className={`message-bubble ${String(text.sender) === String(ID) ? "right-align" : "left-align"}`}
                                         >
                                             {text.content}
+                                            {console.log(text)}
                                         </div>
                                     ))}
                                 </div>

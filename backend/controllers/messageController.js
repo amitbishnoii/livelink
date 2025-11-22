@@ -21,7 +21,7 @@ export const getMessage = async (req, res) => {
                 { sender: senderID, receiver: recID },
                 { sender: recID, receiver: senderID },
             ]
-        }).select("content date")
+        }).select("content date sender")
             .sort({ date: 1 })
         res.json({ messages: chat, success: true })
     } catch (error) {
