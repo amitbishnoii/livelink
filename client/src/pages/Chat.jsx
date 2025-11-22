@@ -57,6 +57,17 @@ const Chat = () => {
         }
     };
 
+    const getMessages = async (sen, rec) => {
+        try {
+            if (!sen || !rec) return;
+            const res = await fetch(`http://localhost:3000/message/getMessage/${sen}/${rec}`);
+            const r = await res.json();
+            console.log(r);
+        } catch (error) {
+            console.log('getMessages error: ', error);
+        }
+    }
+
     useEffect(() => {
         getInfo();
     }, []);
@@ -68,6 +79,7 @@ const Chat = () => {
 
     useEffect(() => {
         getFriendInfo(selectedUser);
+        getMessages(ID, selectedUser?._id);
     }, [selectedUser]);
 
     useEffect(() => {

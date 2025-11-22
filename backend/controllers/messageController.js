@@ -23,7 +23,7 @@ export const getMessage = async (req, res) => {
             ]
         }).select("content date")
             .sort({ date: 1 })
-        res.json({ messages: chat, asdf: chat.content, success: true })
+        res.json({ messages: chat, success: true })
     } catch (error) {
         res.json({ message: error, success: false })
     }
