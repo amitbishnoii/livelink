@@ -6,6 +6,7 @@ import cors from "cors"
 import authRoute from "./routes/authRoute.js";
 import friendRoute from "./routes/friendRoute.js"
 import userRoute from "./routes/userRoute.js"
+import messageRoute from "./routes/messageRoute.js"
 import { Server } from "socket.io";
 import http from "http"
 import { saveMessage } from "./controllers/messageController.js";
@@ -26,6 +27,7 @@ app.use(cors());
 app.use("/auth", authRoute)
 app.use("/user", userRoute)
 app.use("/friends", friendRoute)
+app.use("/message", messageRoute)
 
 connectDB();
 
