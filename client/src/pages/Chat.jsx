@@ -1,198 +1,259 @@
-import React, { useRef } from 'react'
-import "../CSS/Chat.css"
-import { useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react';
+import "../CSS/Chat.css";
 import { BsFillSendFill } from "react-icons/bs";
 import { useLocation } from 'react-router-dom';
 import { IoPersonAdd } from "react-icons/io5";
-import { io } from "socket.io-client"
+import { io } from "socket.io-client";
 
 const Chat = () => {
-    const socket = useRef(null)
-    const location = useLocation();
-    const { user } = location.state;
-    const [selectedUser, setselectedUser] = useState(null);
-    const [input, setinput] = useState(null);
-    const [message, setmessage] = useState();
-    const [friendCard, setfriendCard] = useState(null);
-    const [searchFriend, setsearchFriend] = useState(null);
-    const [friend, setfriend] = useState([]);
-    const [ID, setID] = useState(null);
-    const [messages, setmessages] = useState([]);
-    const [currentUser, setcurrentUser] = useState([]);
-    const [currentChatInfo, setcurrentChatInfo] = useState([])
+  const socket = useRef(null);
+  const selectedUserRef = useRef(null);
+  const location = useLocation();
+  const { user } = location.state;
 
-    const getInfo = async () => {
-        const res = await fetch(`http://localhost:3000/user/getID/${user}`);
-        const r = await res.json();
-        console.log('getInfo ran! ID is: ', r);
-        setID(r.ID)
-        setcurrentUser(prev => [...prev, r.userINFO])
+  const [ID, setID] = useState(null);
+  const [friends, setFriends] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [currentChatInfo, setCurrentChatInfo] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [searchFriend, setSearchFriend] = useState("");
+  const [friendCard, setFriendCard] = useState(null);
+
+  useEffect(() => {
+    selectedUserRef.current = selectedUser;
+  }, [selectedUser]);
+
+  const getInfo = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/user/getID/${user}`);
+      const r = await res.json();
+      setID(r.ID);
+    } catch (err) {
+      console.error("getInfo error:", err);
     }
+  };
 
-    const getFriendInfo = async () => {
-        const res = await fetch(`http://localhost:3000/user/getID/${selectedUser?.userName}`);
-        const r = await res.json();
-        console.log('info got from backend in getFriendInfo: ', r);
-        setcurrentChatInfo(r.userINFO);
+  const getFriends = async () => {
+    try {
+      if (!ID) return;
+      const res = await fetch(`http://localhost:3000/friends/getFriends/${ID}`);
+      const r = await res.json();
+      setFriends(r.list || []);
+    } catch (err) {
+      console.error("getFriends error:", err);
     }
+  };
 
-    const getFriends = async () => {
-        const res = await fetch(`http://localhost:3000/friends/getFriends/${ID}`);
-        const r = await res.json();
-        setfriend(r.list);
+  const getFriendInfo = async (sel) => {
+    try {
+      if (!sel) return;
+      const res = await fetch(`http://localhost:3000/user/getID/${sel.userName}`);
+      const r = await res.json();
+      setCurrentChatInfo(r.userINFO || null);
+      setMessages([]);
+    } catch (err) {
+      console.error("getFriendInfo error:", err);
     }
+  };
 
-    useEffect(() => {
-        getInfo();
-    }, [])
+  useEffect(() => {
+    getInfo();
+  }, []);
 
-    useEffect(() => {
-        if (!ID) return;
-        socket.current = io("http://localhost:3000");
-        console.log("connected to socket.");
+  useEffect(() => {
+    if (!ID) return;
+    getFriends();
+  }, [ID]);
 
-        socket.current.on("connect", () => {
-            console.log("Frontend socket ID:", socket.current.id);
-        });
+  useEffect(() => {
+    getFriendInfo(selectedUser);
+  }, [selectedUser]);
 
-        console.log('user ID: ', ID);
-        socket.current.emit("addUser", ID)
+  useEffect(() => {
+    if (!ID) return;
 
-        socket.current.on("save-message", (data) => {
-            console.log('message saved in the backend: ', data);
-        })
-        socket.current.on("receive-message", (Data) => {
-            console.log('bro: ', Data);
-            setmessages(prev => [...prev, Data]);
-        })
+    socket.current = io("http://localhost:3000");
 
-        return () => {
-            socket.current.disconnect();
-        };
-    }, [ID])
+    socket.current.on("connect", () => {
+      console.log("Socket connected:", socket.current.id);
+      socket.current.emit("addUser", ID);
+    });
 
-    useEffect(() => {
-        if (ID) {
-            getFriends();
+    const onSaveMessage = (data) => {
+      console.log("save-message:", data);
+    };
+    socket.current.on("save-message", onSaveMessage);
+
+    const onReceiveMessage = (Data) => {
+      try {
+        const senderId = String(Data?.id);
+        const myId = String(ID);
+
+        if (senderId === myId) {
+          return;
         }
-    }, [ID])
 
-    useEffect(() => {
-        getFriendInfo()
-    }, [selectedUser])
-
-
-    const handleSend = () => {
-        if (input) {
-            const currentMSG = input;
-            setmessage(input);
-            setinput("");
-            socket.current.emit("sendMessage", {
-                senderID: ID,
-                recID: selectedUser._id,
-                Message: currentMSG,
-            })
+        const active = selectedUserRef.current;
+        if (active && String(active._id) === senderId) {
+          setMessages(prev => [...prev, { id: senderId, content: Data?.content }]);
+        } else {
+          console.log("New message from other user:", senderId, Data?.content);
         }
+      } catch (err) {
+        console.error("onReceiveMessage error:", err);
+      }
+    };
+
+    socket.current.on("receive-message", onReceiveMessage);
+
+    return () => {
+      if (!socket.current) return;
+      socket.current.off("save-message", onSaveMessage);
+      socket.current.off("receive-message", onReceiveMessage);
+      socket.current.disconnect();
+      socket.current = null;
+    };
+  }, [ID]);
+
+
+  const handleSend = () => {
+    if (!input || !selectedUser || !ID) return;
+
+    const msg = input;
+    setInput("");
+
+    socket.current.emit("sendMessage", {
+      senderID: ID,
+      recID: selectedUser._id,
+      Message: msg,
+    });
+
+    setMessages(prev => [...prev, { id: ID, content: msg }]);
+  };
+
+  const handleSearch = async () => {
+    try {
+      if (!searchFriend) return;
+      const res = await fetch(`http://localhost:3000/user/searchUser?username=${searchFriend}`);
+      const r = await res.json();
+      setFriendCard(r.userInfo || null);
+    } catch (err) {
+      console.error("handleSearch error:", err);
     }
+  };
 
-    const handleSearch = async () => {
-        console.log(searchFriend);
-        const res = await fetch(`http://localhost:3000/user/searchUser?username=${searchFriend}`);
-        const r = await res.json();
-        setfriendCard(r.userInfo)
+  const handleAddFriend = async () => {
+    try {
+      if (!friendCard) return;
+      const res = await fetch("http://localhost:3000/friends/friend/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sender_id: ID, rec_id: friendCard._id }),
+      });
+      const r = await res.json();
+      if (r.success) {
+        getFriends();
+        setFriendCard(null);
+        setSearchFriend("");
+      }
+    } catch (err) {
+      console.error("handleAddFriend error:", err);
     }
+  };
 
-    const handleAddFriend = async () => {
-        const res = await fetch("http://localhost:3000/friends/friend/add", {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sender_id: ID, rec_id: friendCard?._id })
-        })
-        const r = await res.json();
-        if (r.success) {
-            window.location.reload()
-        }
-    }
+  return (
+    <div className="chat-main">
+      <h2>LiveLink Chat Application</h2>
+      <div className="content-main">
+        <div className="left-bar">
+          <h3>Messages</h3>
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search by Username"
+              value={searchFriend}
+              onChange={e => setSearchFriend(e.target.value)}
+            />
+            <button onClick={handleSearch}>Search</button>
+          </div>
 
-    return (
-        <>
-            <div className="chat-main">
-                <h2>LiveLink Chat Application</h2>
-                <div className="content-main">
-                    <div className="left-bar">
-                        <h3>Messages</h3>
-                        <div className="search-bar">
-                            <input type="text" placeholder='Search by Username' value={searchFriend || ""} onChange={e => setsearchFriend(e.target.value)} />
-                            <button onClick={handleSearch}>Search</button>
-                        </div>
-                        {searchFriend ? (
-                            <div className="friend-card">
-                                <div className="friend-pic">
-                                </div>
-                                <div className="friend-info">
-                                    <p>{friendCard?.userName}</p>
-                                    <span>{friendCard?.firstName}</span>
-                                </div>
-                                <button onClick={handleAddFriend}><IoPersonAdd size={20} /></button>
-                            </div>
-                        ) : ("")}
-                        <div className="friends-section">
-                            {(friend.map((info, i) => {
-                                return (
-                                    <div key={i} className="profile-card" onClick={() => setselectedUser(info)}>
-                                        <img src={info.profilePic} alt={info.name} className='profile-pic' />
-                                        <p>{info.firstName}</p>
-                                    </div>
-                                );
-                            }))}
-                        </div>
-                    </div>
+          {searchFriend && friendCard && (
+            <div className="friend-card">
+              <div className="friend-info">
+                <p>{friendCard.userName}</p>
+                <span>{friendCard.firstName}</span>
+              </div>
+              <button onClick={handleAddFriend}><IoPersonAdd size={20} /></button>
+            </div>
+          )}
 
+          <div className="friends-section">
+            {friends.map((info, i) => (
+              <div
+                key={i}
+                className="profile-card"
+                onClick={() => setSelectedUser(info)}
+              >
+                <img src={info.profilePic} alt={info.name} className="profile-pic" />
+                <p>{info.firstName}</p>
+              </div>
+            ))}
+          </div>
+        </div>
 
-                    <div className="center-main">
-                        {selectedUser ? (
-                            <>
-                                <div className="chat-profile">
-                                    <img src={currentChatInfo ? currentChatInfo['profilePic'] : ""} alt="" />
-                                    <div className="userinfo">
-                                        <p>{selectedUser.firstName}</p>
-                                        <span>@{selectedUser.userName}</span>
-                                    </div>
-                                </div>
-                                <div className="chat-window">
-                                    <div className="message-window">
-                                        {messages.map((text, id) => {
-                                            return <div key={id} className={`message-bubble ${text.id === ID ? "right-align" : "left-align"}`}>
-                                                {text.content}
-                                            </div>
-                                        })}
-                                    </div>
-                                    <div className="message-bar">
-                                        <input type="text" placeholder='Message...' value={input || ""} onChange={e => setinput(e.target.value)} />
-
-                                        <button onClick={handleSend}><BsFillSendFill /></button>
-                                    </div>
-                                </div>
-                            </>
-                        ) : ""}
-                    </div>
-
-
-                    <div className="right-bar">
-                        {selectedUser ? (
-                            currentChatInfo ? (
-                                <div className="user-info" >
-                                    <img src={currentChatInfo["profilePic"]} alt="" />
-                                    <h5>{selectedUser.firstName}</h5>
-                                    <span>{selectedUser.bio}</span>
-                                </div>
-                            ) : ""
-                        ) : ""}
-                    </div>
+        <div className="center-main">
+          {selectedUser ? (
+            <>
+              <div className="chat-profile">
+                <img src={currentChatInfo?.profilePic} alt="" />
+                <div className="userinfo">
+                  <p>{selectedUser.firstName}</p>
+                  <span>@{selectedUser.userName}</span>
                 </div>
-            </div >
-        </>
-    )
-}
+              </div>
 
-export default Chat
+              <div className="chat-window">
+                <div className="message-window">
+                  {messages.map((text, idx) => (
+                    <div
+                      key={idx}
+                      className={`message-bubble ${String(text.id) === String(ID) ? "right-align" : "left-align"}`}
+                    >
+                      {text.content}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="message-bar">
+                  <input
+                    type="text"
+                    placeholder="Message..."
+                    value={input}
+                    onChange={e => setInput(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") handleSend(); }}
+                  />
+                  <button onClick={handleSend}><BsFillSendFill /></button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div style={{ padding: 20 }}>Select a friend to start chatting</div>
+          )}
+        </div>
+
+        <div className="right-bar">
+          {selectedUser && currentChatInfo && (
+            <div className="user-info">
+              <img src={currentChatInfo.profilePic} alt="" />
+              <h5>{selectedUser.firstName}</h5>
+              <span>{selectedUser.bio}</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Chat;
