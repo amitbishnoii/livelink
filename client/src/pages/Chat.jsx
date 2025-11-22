@@ -233,7 +233,6 @@ const Chat = () => {
                                             className={`message-bubble ${String(text.sender) === String(ID) ? "right-align" : "left-align"}`}
                                         >
                                             {text.content}
-                                            {console.log(text)}
                                         </div>
                                     ))}
                                 </div>

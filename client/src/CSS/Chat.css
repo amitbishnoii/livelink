@@ -6,6 +6,7 @@
     width: 100vw;
     height: 100vh;
     font-family: 'Poppins', sans-serif;
+    overflow: hidden;
 }
 
 h2 {
@@ -27,6 +28,7 @@ h2 {
     padding-right: 20px;
     border-right: 1px solid #2f2f2f;
     overflow-y: auto;
+    min-height: 0;
 }
 
 .search-bar {
@@ -127,6 +129,7 @@ h2 {
     position: relative;
     overflow: hidden;
     padding: 20px;
+    height: 85vh;
 }
 
 .center-main::before {
@@ -144,25 +147,27 @@ h2 {
 .chat-window {
     width: 100%;
     height: 100%;
-    padding-top: 50px;
+    padding-top: 10px;
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    flex: 1;
 }
 
+
 .message-bubble {
-    max-width: 40%;
+    max-width: 60%;
     padding: 10px 14px;
     border-radius: 10px;
     font-size: 14px;
     line-height: 1.4;
     color: #eaeaea;
     background: #2b2d31;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
     word-wrap: break-word;
     overflow-wrap: break-word;
-    white-space: pre-wrap; 
+    white-space: pre-wrap;
 }
 
 .right-align {
@@ -177,7 +182,6 @@ h2 {
 }
 
 .left-align {
-    
     position: relative;
     z-index: 10;
     margin-right: auto;
@@ -189,9 +193,15 @@ h2 {
 }
 
 .message-window {
-    height: 100%;
+    height: 10%;
     width: 100%;
     margin-bottom: 20px;
+    scroll-behavior: smooth;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
 }
 
 .userinfo p {
@@ -207,12 +217,14 @@ h2 {
     display: flex;
     gap: 10px;
     width: 95%;
-    position: relative;
-    z-index: 4;
+    position: fixed;
+    z-index: 40;
+    bottom: 0;
 }
 
 .message-bar input {
     margin-right: 5px;
+    flex: 1;
 }
 
 .chat-profile {
@@ -300,6 +312,10 @@ button:active {
     width: 15vw;
     padding: 14px;
     border-left: 1px solid #2f2f2f;
+    overflow-y: auto;
+    /* FIX */
+    min-height: 0;
+    /* FIX */
 }
 
 .user-info {
