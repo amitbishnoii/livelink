@@ -37,11 +37,24 @@ io.on("connection", (socket) => {
 
     socket.on("addUser", (userId) => {
         onlineUsers[userId] = socket.id;
+        socket.userID = userId
         console.log('adduser trigerred');
         socket.broadcast.emit("userConnected", {
             USER: userId
         })
         console.log('online users: ', onlineUsers);
+    })
+
+    socket.on("disconnect", () => {
+        const userId = socket.userID
+
+        if (userId) {
+            delete onlineUsers[userId];
+            console.log("users online after disconnection: ", onlineUsers);
+            socket.broadcast.emit("userDisconnected", {
+                USER: userId
+            })
+        }
     })
 
     socket.on("sendMessage", async (data) => {

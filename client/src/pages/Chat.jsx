@@ -87,19 +87,19 @@ const Chat = () => {
         if (!socket.current) return;
 
         socket.current.on("userConnected", (data) => {
-            console.log('current friends are: ', friends);
-            console.log('this user is now online: ', data);
             if (friends.some(friend => friend._id === data.USER)) {
-                console.log('if triggered');
                 setActiveUsers(prev => {
-                    console.log(prev);
                     if (!prev.includes(data.USER)) {
-                        console.log('online user detected with id: ', data.USER, prev);
                         return [...prev, data.USER];
                     }
                     return prev;
                 })
             }
+        })
+
+        socket.current.on("userDisconnected", (data) => {
+            console.log('userDisconnected Fired!!');
+            setActiveUsers(prev => prev.filter(id => id !== data.USER));
         })
     }, [friends])
 
