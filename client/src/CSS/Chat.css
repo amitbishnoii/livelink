@@ -257,6 +257,14 @@ h2 {
     object-fit: cover;
 }
 
+.chat-profile .active-status {
+    position: absolute;
+    top: 0;
+    width: 14px;
+    height: 14px;
+    border-radius: 10px;
+}
+
 .chat-content {
     flex: 1;
     overflow-y: auto;

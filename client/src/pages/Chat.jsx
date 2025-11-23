@@ -19,6 +19,7 @@ const Chat = () => {
     const [input, setInput] = useState("");
     const [searchFriend, setSearchFriend] = useState("");
     const [friendCard, setFriendCard] = useState(null);
+    const [activeUsers, setActiveUsers] = useState([])
 
     useEffect(() => {
         selectedUserRef.current = selectedUser;
@@ -91,6 +92,11 @@ const Chat = () => {
             console.log("Socket connected:", socket.current.id);
             socket.current.emit("addUser", ID);
         });
+
+        socket.current.on("userConnected", (data) => {
+            console.log('this user is now online: ', data);
+            setActiveUsers()
+        })
 
         const onSaveMessage = (data) => {
             console.log("save-message:", data);
@@ -223,6 +229,7 @@ const Chat = () => {
                                     <p>{selectedUser.firstName}</p>
                                     <span>@{selectedUser.userName}</span>
                                 </div>
+                                    <div className="active-status" style={{backgroundColor: "rgb(0, 255, 0)"}}></div>
                             </div>
 
                             <div className="chat-window">

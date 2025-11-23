@@ -33,11 +33,14 @@ connectDB();
 
 const onlineUsers = {}
 io.on("connection", (socket) => {
-    console.log("new connection at ", socket.id);
+    console.log("new connection at: ", socket.id);
 
     socket.on("addUser", (userId) => {
         onlineUsers[userId] = socket.id;
         console.log('adduser trigerred');
+        socket.broadcast.emit("userConnected", {
+            USER: userId
+        })
         console.log('online users: ', onlineUsers);
     })
 
