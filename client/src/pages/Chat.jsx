@@ -84,6 +84,27 @@ const Chat = () => {
     }, [selectedUser]);
 
     useEffect(() => {
+        if (!socket.current) return;
+
+        socket.current.on("userConnected", (data) => {
+            console.log('current friends are: ', friends);
+            console.log('this user is now online: ', data);
+            if (friends.some(friend => friend._id === data.USER)) {
+                console.log('if triggered');
+                setActiveUsers(prev => {
+                    console.log(prev);
+                    if (!prev.includes(data.USER)) {
+                        console.log('online user detected with id: ', data.USER, prev);
+                        return [...prev, data.USER];
+                    }
+                    return prev;
+                })
+            }
+        })
+    }, [friends])
+
+
+    useEffect(() => {
         if (!ID) return;
 
         socket.current = io("http://localhost:3000");
@@ -92,11 +113,6 @@ const Chat = () => {
             console.log("Socket connected:", socket.current.id);
             socket.current.emit("addUser", ID);
         });
-
-        socket.current.on("userConnected", (data) => {
-            console.log('this user is now online: ', data);
-            setActiveUsers()
-        })
 
         const onSaveMessage = (data) => {
             console.log("save-message:", data);
@@ -229,7 +245,7 @@ const Chat = () => {
                                     <p>{selectedUser.firstName}</p>
                                     <span>@{selectedUser.userName}</span>
                                 </div>
-                                    <div className="active-status" style={{backgroundColor: "rgb(0, 255, 0)"}}></div>
+                                <div className="active-status" style={{ backgroundColor: "rgb(0, 255, 0)" }}></div>
                             </div>
 
                             <div className="chat-window">
@@ -267,6 +283,11 @@ const Chat = () => {
                             <img src={currentChatInfo.profilePic} alt="" />
                             <h5>{selectedUser.firstName}</h5>
                             <span>{selectedUser.bio}</span>
+                        </div>
+                    )}
+                    {activeUsers && friends && (
+                        <div className="hell">
+                            {activeUsers}
                         </div>
                     )}
                 </div>
