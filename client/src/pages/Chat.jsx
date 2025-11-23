@@ -103,7 +103,6 @@ const Chat = () => {
         })
     }, [friends])
 
-
     useEffect(() => {
         if (!ID) return;
 
@@ -245,7 +244,11 @@ const Chat = () => {
                                     <p>{selectedUser.firstName}</p>
                                     <span>@{selectedUser.userName}</span>
                                 </div>
-                                <div className="active-status" style={{ backgroundColor: "rgb(0, 255, 0)" }}></div>
+                                <div className={
+                                    activeUsers.some(user => user === selectedUser._id)
+                                        ? "active-status"
+                                        : ""
+                                }></div>
                             </div>
 
                             <div className="chat-window">
@@ -283,11 +286,6 @@ const Chat = () => {
                             <img src={currentChatInfo.profilePic} alt="" />
                             <h5>{selectedUser.firstName}</h5>
                             <span>{selectedUser.bio}</span>
-                        </div>
-                    )}
-                    {activeUsers && friends && (
-                        <div className="hell">
-                            {activeUsers}
                         </div>
                     )}
                 </div>
