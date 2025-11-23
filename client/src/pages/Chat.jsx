@@ -239,16 +239,18 @@ const Chat = () => {
                     {selectedUser ? (
                         <>
                             <div className="chat-profile">
-                                <img src={currentChatInfo?.profilePic} alt="" />
+                                <div className="avatar">
+                                    <img src={currentChatInfo?.profilePic} alt="" />
+                                    <div className={
+                                        activeUsers.some(user => user === selectedUser._id)
+                                            ? "active-status"
+                                            : ""
+                                    }></div>
+                                </div>
                                 <div className="userinfo">
                                     <p>{selectedUser.firstName}</p>
                                     <span>@{selectedUser.userName}</span>
                                 </div>
-                                <div className={
-                                    activeUsers.some(user => user === selectedUser._id)
-                                        ? "active-status"
-                                        : ""
-                                }></div>
                             </div>
 
                             <div className="chat-window">
