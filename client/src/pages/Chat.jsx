@@ -52,7 +52,6 @@ const Chat = () => {
             const res = await fetch(`http://localhost:3000/user/getID/${sel.userName}`);
             const r = await res.json();
             setCurrentChatInfo(r.userINFO || null);
-            setMessages([]);
         } catch (err) {
             console.error("getFriendInfo error:", err);
         }
@@ -258,7 +257,8 @@ const Chat = () => {
                                     {messages.map((text, idx) => (
                                         <div
                                             key={idx}
-                                            className={`message-bubble ${String(text.sender) === String(ID) ? "right-align" : "left-align"}`}
+                                            className={`message-bubble ${String(text.sender) === String(ID) ? "right-align" : "left-align"
+                                                }`}
                                         >
                                             {text.content}
                                         </div>
