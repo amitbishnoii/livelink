@@ -4,10 +4,9 @@ import { getInfo, getFriends, getFriendInfo, getMessages } from '../api/chatApi'
 import { BsFillSendFill } from "react-icons/bs";
 import { useLocation } from 'react-router-dom';
 import { IoPersonAdd } from "react-icons/io5";
-import { io } from "socket.io-client";
+import { useSocket } from "../hooks/useSocket.js"
 
 const Chat = () => {
-    const socket = useRef(null);
     const selectedUserRef = useRef(null);
     const location = useLocation();
 
@@ -21,6 +20,14 @@ const Chat = () => {
     const [searchFriend, setSearchFriend] = useState("");
     const [friendCard, setFriendCard] = useState(null);
     const [activeUsers, setActiveUsers] = useState([]);
+
+    const { sendMessage } = useSocket({
+        ID,
+        selectedUserRef,
+        friends,
+        setMessages,
+        setActiveUsers
+    });
 
     useEffect(() => {
         selectedUserRef.current = selectedUser;
@@ -54,84 +61,13 @@ const Chat = () => {
         load();
     }, [selectedUser]);
 
-    useEffect(() => {
-        if (!socket.current) return;
-
-        socket.current.on("userConnected", (data) => {
-            if (friends.some(friend => friend._id === data.USER)) {
-                setActiveUsers(prev => {
-                    if (!prev.includes(data.USER)) {
-                        return [...prev, data.USER];
-                    }
-                    return prev;
-                });
-            }
-        });
-
-        socket.current.on("userDisconnected", (data) => {
-            console.log('userDisconnected Fired!!');
-            setActiveUsers(prev => prev.filter(id => id !== data.USER));
-        });
-    }, [friends])
-
-    useEffect(() => {
-        if (!ID) return;
-
-        socket.current = io("http://localhost:3000");
-
-        socket.current.on("connect", () => {
-            console.log("Socket connected:", socket.current.id);
-            socket.current.emit("addUser", ID);
-        });
-
-        const onSaveMessage = (data) => {
-            console.log("save-message:", data);
-        };
-        socket.current.on("save-message", onSaveMessage);
-
-        const onReceiveMessage = (Data) => {
-            try {
-                const senderId = String(Data?.id);
-                const myId = String(ID);
-
-                if (senderId === myId) {
-                    return;
-                }
-
-                const active = selectedUserRef.current;
-                if (active && String(active._id) === senderId) {
-                    setMessages(prev => [...prev, { id: senderId, content: Data?.content }]);
-                } else {
-                    console.log("New message from other user:", senderId, Data?.content);
-                }
-            } catch (err) {
-                console.error("onReceiveMessage error:", err);
-            }
-        };
-
-        socket.current.on("receive-message", onReceiveMessage);
-
-        return () => {
-            if (!socket.current) return;
-            socket.current.off("save-message", onSaveMessage);
-            socket.current.off("receive-message", onReceiveMessage);
-            socket.current.disconnect();
-            socket.current = null;
-        };
-    }, [ID]);
-
-
     const handleSend = () => {
         if (!input || !selectedUser || !ID) return;
 
         const msg = input;
         setInput("");
 
-        socket.current.emit("sendMessage", {
-            senderID: ID,
-            recID: selectedUser._id,
-            Message: msg,
-        });
+        sendMessage(msg);
 
         setMessages(prev => [...prev, { id: ID, content: msg }]);
     };
