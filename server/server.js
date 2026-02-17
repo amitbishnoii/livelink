@@ -58,33 +58,32 @@ io.on("connection", (socket) => {
     })
 
     socket.on("sendMessage", async (data) => {
-        const save = await saveMessage(data)
+        console.log('data in server.js: ', data);
+        const save = await saveMessage(data);
         socket.emit("save-message", {
             status: "ok",
             message: "message saved",
             content: save.content,
-        })
-        const socketID = onlineUsers[data.recID]
-        const socketIDofSender = onlineUsers[data.senderID]
+        });
+        const socketID = onlineUsers[data.recID];
+        const socketIDofSender = onlineUsers[data.senderID];
         console.log('receiver socket id: ', socketID);
         console.log('sender socket id: ', socketIDofSender);
         io.to(socketID).emit("receive-message", {
             id: data.senderID,
             content: data.Message,
-        })
+        });
         io.to(socketIDofSender).emit("receive-message", {
             id: data.senderID,
             content: data.Message,
-        })
-
-
-    })
-})
+        });
+    });
+});
 
 app.get("/", async (req, res) => {
-    res.send("hello world")
-})
+    res.send("hello world");
+});
 
 server.listen(port, () => {
     console.log("server listening on port ", port);
-})
+});

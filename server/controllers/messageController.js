@@ -3,13 +3,14 @@ import Message from "../models/Message.js";
 export const saveMessage = async (data) => {
     try {
         const msg = await Message.create({
-            sender: data.senderID,
+            sender: data.senderID.ID,
             receiver: data.recID,
             content: data.Message
         })
         return msg.toJSON()
     } catch (error) {
-        res.json({ message: error, success: false })
+        console.log('data: ', data);
+        res.json({ message: error, success: false });
     }
 }
 
