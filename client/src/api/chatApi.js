@@ -1,42 +1,44 @@
-export const getInfo = async () => {
+
+export const getInfo = async (username) => {
     try {
-        const res = await fetch(`http://localhost:3000/user/getID/${user}`);
+        const res = await fetch(`http://localhost:3000/user/getID/${username}`);
         const r = await res.json();
-        setID(r.ID);
+        return r;
     } catch (err) {
         console.error("getInfo error:", err);
     }
 };
 
-export const getFriends = async () => {
+export const getFriends = async (ID) => {
     try {
-        if (!ID) return;
-        const res = await fetch(`http://localhost:3000/friends/getFriends/${ID}`);
+        const res = await fetch(`http://localhost:3000/friends/getFriends/${ID.ID}`);
         const r = await res.json();
-        setFriends(r.list || []);
+        return r.list;
     } catch (err) {
         console.error("getFriends error:", err);
     }
 };
 
-export const getFriendInfo = async (sel) => {
+export const getFriendInfo = async (username) => {
     try {
-        if (!sel) return;
-        const res = await fetch(`http://localhost:3000/user/getID/${sel.userName}`);
+        const res = await fetch(`http://localhost:3000/user/getID/${username.userName}`);
         const r = await res.json();
-        setCurrentChatInfo(r.userINFO || null);
+        return r.userINFO;
     } catch (err) {
         console.error("getFriendInfo error:", err);
     }
 };
 
-export const getMessages = async (sen, rec) => {
+export const getMessages = async (sender, receiver) => {
     try {
-        if (!sen || !rec) return;
-        const res = await fetch(`http://localhost:3000/message/getMessage/${sen}/${rec}`);
+        console.log('getmessage ran!!');
+        if (!sender || !receiver) return;
+        console.log('sender: ', sender);
+        console.log('receiver: ', receiver);
+        const res = await fetch(`http://localhost:3000/message/getMessage/${sender.ID}/${receiver}`);
         const r = await res.json();
-        setMessages(r.messages)
+        return r.messages;
     } catch (error) {
         console.log('getMessages error: ', error);
     }
-}
+};

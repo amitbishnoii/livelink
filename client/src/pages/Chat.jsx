@@ -10,34 +10,48 @@ const Chat = () => {
     const socket = useRef(null);
     const selectedUserRef = useRef(null);
     const location = useLocation();
+
     const { user } = location.state;
-    const [ID, setID] = useState(null);
-    const [friends, setFriends] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [currentChatInfo, setCurrentChatInfo] = useState(null);
+    const [ID, setID] = useState(null); // this is the _id of the current user
+    const [friends, setFriends] = useState([]); // these are the friends of the user
+    const [selectedUser, setSelectedUser] = useState(null); // this is the current chat clicked by user
+    const [currentChatInfo, setCurrentChatInfo] = useState(null); // info of user which is clicked by client
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
     const [searchFriend, setSearchFriend] = useState("");
     const [friendCard, setFriendCard] = useState(null);
-    const [activeUsers, setActiveUsers] = useState([])
+    const [activeUsers, setActiveUsers] = useState([]);
 
     useEffect(() => {
         selectedUserRef.current = selectedUser;
     }, [selectedUser]);
 
-    
     useEffect(() => {
-        getInfo();
+        const load = async () => {
+            const data = await getInfo(user);
+            setID(data || null);
+        };
+        load();
     }, []);
 
     useEffect(() => {
         if (!ID) return;
-        getFriends();
+        const loadFriends = async () => {
+            const data = await getFriends(ID);
+            setFriends(data || []);
+        };
+        loadFriends();
     }, [ID]);
 
     useEffect(() => {
-        getFriendInfo(selectedUser);
-        getMessages(ID, selectedUser?._id);
+        const load = async () => {
+            if (!selectedUser || !ID) return;
+            const friendInfo = await getFriendInfo(selectedUser);
+            const message = await getMessages(ID, selectedUser?._id);
+            setCurrentChatInfo(friendInfo || null);
+            setMessages(message);
+        };
+        load();
     }, [selectedUser]);
 
     useEffect(() => {
@@ -50,14 +64,14 @@ const Chat = () => {
                         return [...prev, data.USER];
                     }
                     return prev;
-                })
+                });
             }
-        })
+        });
 
         socket.current.on("userDisconnected", (data) => {
             console.log('userDisconnected Fired!!');
             setActiveUsers(prev => prev.filter(id => id !== data.USER));
-        })
+        });
     }, [friends])
 
     useEffect(() => {
@@ -212,7 +226,7 @@ const Chat = () => {
 
                             <div className="chat-window">
                                 <div className="message-window">
-                                    {messages.map((text, idx) => (
+                                    {messages && messages.map((text, idx) => (
                                         <div
                                             key={idx}
                                             className={`message-bubble ${String(text.sender) === String(ID) ? "right-align" : "left-align"
