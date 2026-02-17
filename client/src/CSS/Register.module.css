@@ -85,7 +85,6 @@
   box-shadow: 0 0 12px rgba(34, 211, 238, 0.4);
 }
 
-/* ✅ Responsive tweaks */
 @media (max-width: 768px) {
   .card {
     width: 85%;

@@ -5,6 +5,7 @@ import SetupProfile from './Setup';
 import styles from "../CSS/Register.module.css";
 
 const Register = () => {
+  document.title = "Register | LiveLink";
   const navigate = useNavigate();
   const [error, seterror] = useState();
   const { register, handleSubmit } = useForm();
@@ -31,7 +32,7 @@ const Register = () => {
   return (
     <div className={styles.main}>
       <div className={styles.card}>
-        <h1 className={styles.title}>LiveLink | Register</h1>
+        <h1 className={styles.title}>Register | LiveLink</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <input {...register("firstName")} required placeholder="First Name" />

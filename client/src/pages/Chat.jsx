@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import "../CSS/Chat.css";
+import { getInfo, getFriends, getFriendInfo, getMessages } from '../api/chatApi';
 import { BsFillSendFill } from "react-icons/bs";
 import { useLocation } from 'react-router-dom';
 import { IoPersonAdd } from "react-icons/io5";
@@ -10,7 +11,6 @@ const Chat = () => {
     const selectedUserRef = useRef(null);
     const location = useLocation();
     const { user } = location.state;
-
     const [ID, setID] = useState(null);
     const [friends, setFriends] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
@@ -25,49 +25,7 @@ const Chat = () => {
         selectedUserRef.current = selectedUser;
     }, [selectedUser]);
 
-    const getInfo = async () => {
-        try {
-            const res = await fetch(`http://localhost:3000/user/getID/${user}`);
-            const r = await res.json();
-            setID(r.ID);
-        } catch (err) {
-            console.error("getInfo error:", err);
-        }
-    };
-
-    const getFriends = async () => {
-        try {
-            if (!ID) return;
-            const res = await fetch(`http://localhost:3000/friends/getFriends/${ID}`);
-            const r = await res.json();
-            setFriends(r.list || []);
-        } catch (err) {
-            console.error("getFriends error:", err);
-        }
-    };
-
-    const getFriendInfo = async (sel) => {
-        try {
-            if (!sel) return;
-            const res = await fetch(`http://localhost:3000/user/getID/${sel.userName}`);
-            const r = await res.json();
-            setCurrentChatInfo(r.userINFO || null);
-        } catch (err) {
-            console.error("getFriendInfo error:", err);
-        }
-    };
-
-    const getMessages = async (sen, rec) => {
-        try {
-            if (!sen || !rec) return;
-            const res = await fetch(`http://localhost:3000/message/getMessage/${sen}/${rec}`);
-            const r = await res.json();
-            setMessages(r.messages)
-        } catch (error) {
-            console.log('getMessages error: ', error);
-        }
-    }
-
+    
     useEffect(() => {
         getInfo();
     }, []);

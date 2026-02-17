@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  document.title = "Login | LiveLink";
   const navigate = useNavigate();
   const [error, seterror] = useState();
 
@@ -31,7 +32,7 @@ const Login = () => {
   return (
     <div className={styles.main}>
       <div className={styles.card}>
-        <h1 className={styles.title}>LiveLink | Login</h1>
+        <h1 className={styles.title}>Login | LiveLink</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <input {...register('username')} required placeholder='Username' />
