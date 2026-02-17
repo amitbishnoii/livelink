@@ -6,8 +6,7 @@ export const useSocket = ({
     selectedUserRef,
     setMessages,
     friends,
-    setActiveUsers,
-    selectedUser
+    setActiveUsers
 }) => {
 
     const socketRef = useRef(null);
@@ -75,9 +74,10 @@ export const useSocket = ({
     }, [ID]);
 
     const sendMessage = (msg) => {
+        console.log('selectedUserRef: ', selectedUserRef);
         socketRef.current.emit("sendMessage", {
             senderID: ID,
-            recID: selectedUser._id,
+            recID: selectedUserRef.current._id,
             Message: msg,
         });
     };
