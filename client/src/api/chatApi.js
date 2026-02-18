@@ -1,4 +1,4 @@
-import {apiFetch} from '../utils/apiFetch.js';
+import { apiFetch } from '../utils/apiFetch.js';
 
 export const getInfo = async (username) => {
     try {

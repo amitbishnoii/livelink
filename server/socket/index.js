@@ -1,8 +1,19 @@
 import { saveMessage } from "../controllers/messageController.js";
+import jwt from 'jsonwebtoken';
 
 const onlineUsers = {}
 
 export const initSocket = (io) => {
+    io.use((socket, next) => {
+        const token = socket.handshake.auth.token;
+        if (!token) return next(new Error("token not found!"));
+        jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
+            if (err) return next(new Error("token error!"));
+            socket.userID = user.ID;
+            next();
+        });
+    });
+
     io.on("connection", (socket) => {
         console.log("new connection at: ", socket.id);
 

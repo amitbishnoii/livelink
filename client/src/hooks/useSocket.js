@@ -14,7 +14,11 @@ export const useSocket = ({
     useEffect(() => {
         if (!ID) return;
 
-        socketRef.current = io("http://localhost:3000");
+        socketRef.current = io("http://localhost:3000", {
+            auth: {
+                token: localStorage.getItem("token")
+            }
+        });
 
         socketRef.current.on("connect", () => {
             console.log("socket connected:", socketRef.current.id);
@@ -74,7 +78,6 @@ export const useSocket = ({
     }, [ID]);
 
     const sendMessage = (msg) => {
-        console.log('selectedUserRef: ', selectedUserRef);
         socketRef.current.emit("sendMessage", {
             senderID: ID,
             recID: selectedUserRef.current._id,
