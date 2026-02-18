@@ -103,7 +103,7 @@ const Chat = () => {
 
     return (
         <div className="chat-main">
-            <h2>LiveLink Chat Application</h2>
+            <h2>LiveLink Chat App</h2>
             <div className="content-main">
                 <div className="left-bar">
                     <h3>Messages</h3>

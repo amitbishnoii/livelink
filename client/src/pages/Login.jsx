@@ -17,6 +17,7 @@ const Login = () => {
       headers: { 'Content-Type': 'application/json' },
     });
     const r = await res.json();
+    console.log('server response: ', r);
     if (r.success) {
       navigate("/chat", { state: { user: r.Username } })
     } else {
