@@ -1,7 +1,8 @@
+import {apiFetch} from '../utils/apiFetch.js';
 
 export const getInfo = async (username) => {
     try {
-        const res = await fetch(`http://localhost:3000/user/getID/${username}`);
+        const res = await apiFetch(`http://localhost:3000/user/getID/${username}`);
         const r = await res.json();
         return r;
     } catch (err) {
@@ -11,7 +12,7 @@ export const getInfo = async (username) => {
 
 export const getFriends = async (ID) => {
     try {
-        const res = await fetch(`http://localhost:3000/friends/getFriends/${ID.ID}`);
+        const res = await apiFetch(`http://localhost:3000/friends/getFriends/${ID.ID}`);
         const r = await res.json();
         return r.list;
     } catch (err) {
@@ -21,7 +22,7 @@ export const getFriends = async (ID) => {
 
 export const getFriendInfo = async (username) => {
     try {
-        const res = await fetch(`http://localhost:3000/user/getID/${username.userName}`);
+        const res = await apiFetch(`http://localhost:3000/user/getID/${username.userName}`);
         const r = await res.json();
         return r.userINFO;
     } catch (err) {
@@ -32,7 +33,7 @@ export const getFriendInfo = async (username) => {
 export const getMessages = async (sender, receiver) => {
     try {
         if (!sender || !receiver) return;
-        const res = await fetch(`http://localhost:3000/message/getMessage/${sender.ID}/${receiver}`);
+        const res = await apiFetch(`http://localhost:3000/message/getMessage/${sender.ID}/${receiver}`);
         const r = await res.json();
         return r.messages;
     } catch (error) {

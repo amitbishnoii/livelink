@@ -4,7 +4,8 @@ import { getInfo, getFriends, getFriendInfo, getMessages } from '../api/chatApi'
 import { BsFillSendFill } from "react-icons/bs";
 import { useLocation } from 'react-router-dom';
 import { IoPersonAdd } from "react-icons/io5";
-import { useSocket } from "../hooks/useSocket.js"
+import { useSocket } from "../hooks/useSocket.js";
+import { apiFetch } from '../utils/apiFetch.js'; // this is a custom wrapper function which wraps the token header in the fetch api
 
 const Chat = () => {
     document.title = "Chat | LiveLink"
@@ -74,7 +75,7 @@ const Chat = () => {
     const handleSearch = async () => {
         try {
             if (!searchFriend) return;
-            const res = await fetch(`http://localhost:3000/user/searchUser?username=${searchFriend}`);
+            const res = await apiFetch(`http://localhost:3000/user/searchUser?username=${searchFriend}`);
             const r = await res.json();
             setFriendCard(r.userInfo || null);
         } catch (err) {
@@ -85,7 +86,7 @@ const Chat = () => {
     const handleAddFriend = async () => {
         try {
             if (!friendCard) return;
-            const res = await fetch("http://localhost:3000/friends/friend/add", {
+            const res = await apiFetch("http://localhost:3000/friends/friend/add", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ sender_id: ID, rec_id: friendCard._id }),
