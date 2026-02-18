@@ -7,6 +7,7 @@ import { IoPersonAdd } from "react-icons/io5";
 import { useSocket } from "../hooks/useSocket.js"
 
 const Chat = () => {
+    document.title = "Chat | LiveLink"
     const selectedUserRef = useRef(null);
     const location = useLocation();
 
@@ -66,9 +67,7 @@ const Chat = () => {
 
         const msg = input;
         setInput("");
-
         sendMessage(msg);
-
         setMessages(prev => [...prev, { id: ID, content: msg }]);
     };
 

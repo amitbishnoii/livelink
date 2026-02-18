@@ -31,10 +31,7 @@ export const getFriendInfo = async (username) => {
 
 export const getMessages = async (sender, receiver) => {
     try {
-        console.log('getmessage ran!!');
         if (!sender || !receiver) return;
-        console.log('sender: ', sender);
-        console.log('receiver: ', receiver);
         const res = await fetch(`http://localhost:3000/message/getMessage/${sender.ID}/${receiver}`);
         const r = await res.json();
         return r.messages;
