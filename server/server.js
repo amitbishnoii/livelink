@@ -11,6 +11,7 @@ import messageRoute from "./routes/messageRoute.js";
 import { Server } from "socket.io";
 import http from "http";
 import "./config/cloudinary.js";
+import { authenticateToken } from "./middleware/authMiddleware.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -27,9 +28,9 @@ initSocket(io);
 app.use(express.json());
 app.use(cors());
 app.use("/auth", authRoute);
-app.use("/user", userRoute);
-app.use("/friends", friendRoute);
-app.use("/message", messageRoute);
+app.use("/user", authenticateToken, userRoute);
+app.use("/friends", authenticateToken, friendRoute);
+app.use("/message", authenticateToken, messageRoute);
 
 connectDB();
 
