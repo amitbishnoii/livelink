@@ -6,8 +6,8 @@ export const saveMessage = async (data) => {
             sender: data.senderID.ID,
             receiver: data.recID,
             content: data.Message
-        })
-        return msg.toJSON()
+        });
+        return msg.toJSON();
     } catch (error) {
         console.log('data: ', data);
         res.json({ message: error, success: false });
@@ -24,8 +24,8 @@ export const getMessage = async (req, res) => {
             ]
         }).select("content date sender")
             .sort({ date: 1 })
-        res.json({ messages: chat, success: true })
+        res.json({ messages: chat, success: true });
     } catch (error) {
-        res.json({ message: error, success: false })
+        res.json({ message: error, success: false });
     }
 }

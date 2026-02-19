@@ -24,6 +24,7 @@ const io = new Server(server, {
 });
 
 initSocket(io);
+connectDB();
 
 app.use(express.json());
 app.use(cors());
@@ -31,8 +32,6 @@ app.use("/auth", authRoute);
 app.use("/user", authenticateToken, userRoute);
 app.use("/friends", authenticateToken, friendRoute);
 app.use("/message", authenticateToken, messageRoute);
-
-connectDB();
 
 app.get("/", async (req, res) => {
     res.send("hello world");

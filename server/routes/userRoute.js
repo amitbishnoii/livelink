@@ -1,6 +1,6 @@
 import express from "express";
 import { getUser, searchUser, updateUser } from "../controllers/userController.js";
-import upload from "../middleware/upload.js"
+import upload from "../middleware/upload.js";
 
 const router = express.Router();
 

@@ -6,13 +6,13 @@ export const getUser = async (req, res) => {
         const { username } = req.params;
         const info = await User.findOne({ userName: username }).select("-password -__v");
         if (!info) {
-            res.json({ message: "User not found!", success: false })
+            res.json({ message: "User not found!", success: false });
         }
         else {
-            res.json({ message: "User Found!", ID: info._id, userINFO: info, success: true })
+            res.json({ message: "User Found!", ID: info._id, userINFO: info, success: true });
         }
     } catch (error) {
-        res.json({ message: "server error", error: error, success: false })
+        res.json({ message: "server error", error: error, success: false });
     }
 }
 
@@ -21,7 +21,7 @@ export const updateUser = async (req, res) => {
         const { username, bio, dob, emailID } = req.body;
 
         const userExist = await User.findOne({ email: emailID }).select("-password -__v");
-        let pic_url = null
+        let pic_url = null;
 
         console.log('file we got here is: ', req.file);
         console.log('user we got: ', userExist);
@@ -29,7 +29,7 @@ export const updateUser = async (req, res) => {
             const upload = cloudinary.uploader.upload(req.file.path, {
                 folder: "profile_pictures"
             })
-            pic_url = (await upload).secure_url
+            pic_url = (await upload).secure_url;
             if (userExist) {
                 const asdf = await User.findOneAndUpdate({ email: emailID }, {
                     $set: {
@@ -40,18 +40,18 @@ export const updateUser = async (req, res) => {
                     }
                 })
                 console.log('use created in the backend!');
-                res.json({ message: "User updated!", success: true, profilepicURL: asdf.profilePic })
+                res.json({ message: "User updated!", success: true, profilepicURL: asdf.profilePic });
             }
             else {
-                res.json({ message: "User not found!", success: false })
+                res.json({ message: "User not found!", success: false });
             }
         }
         else {
-            res.json({ message: "file not found!", success: false })
+            res.json({ message: "file not found!", success: false });
         }
 
     } catch (error) {
-        res.json({ message: "server error", error: error, success: false })
+        res.json({ message: "server error", error: error, success: false });
     }
 }
 
@@ -60,12 +60,12 @@ export const searchUser = async (req, res) => {
         const { username } = req.query;
         const user = await User.findOne({ userName: username }).select("-password -__v");
         if (!user) {
-            res.json({ message: "User not found!", success: false })
+            res.json({ message: "User not found!", success: false });
         }
         else {
-            res.json({ userInfo: user, success: true })
+            res.json({ userInfo: user, success: true });
         }
     } catch (error) {
-        res.json({ message: error, success: false })
+        res.json({ message: error, success: false });
     }
 }

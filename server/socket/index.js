@@ -17,24 +17,21 @@ export const initSocket = (io) => {
     io.on("connection", (socket) => {
         console.log("new connection at: ", socket.id);
 
-        socket.on("addUser", (userId) => {
-            onlineUsers[userId] = socket.id;
-            socket.userID = userId;
+        socket.on("addUser", () => {
+            onlineUsers[socket.userID] = socket.id;
             console.log('adduser trigerred');
             socket.broadcast.emit("userConnected", {
-                USER: userId
+                USER: socket.userID
             });
             console.log('online users: ', onlineUsers);
         });
 
         socket.on("disconnect", () => {
-            const userId = socket.userID;
-
-            if (userId) {
-                delete onlineUsers[userId];
+            if (socket.userID) {
+                delete onlineUsers[socket.userID];
                 console.log("users online after disconnection: ", onlineUsers);
                 socket.broadcast.emit("userDisconnected", {
-                    USER: userId
+                    USER: socket.userID
                 });
             }
         });
@@ -48,15 +45,15 @@ export const initSocket = (io) => {
                 content: save.content,
             });
             const socketID = onlineUsers[data.recID];
-            const socketIDofSender = onlineUsers[data.senderID];
+            const socketIDofSender = onlineUsers[socket.userID];
             console.log('receiver socket id: ', socketID);
             console.log('sender socket id: ', socketIDofSender);
             io.to(socketID).emit("receive-message", {
-                id: data.senderID,
+                id: socket.userID,
                 content: data.Message,
             });
             io.to(socketIDofSender).emit("receive-message", {
-                id: data.senderID,
+                id: socket.userID,
                 content: data.Message,
             });
         });

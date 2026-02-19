@@ -21,25 +21,25 @@ export const addFriends = async (req, res) => {
         else {
             const add_friend = await Friends.findOneAndUpdate({ user: sender_id }, {
                 $addToSet: { friendList: rec_id }
-            })
-            res.json({ message: "friend added!", info: add_friend, success: true })
+            });
+            res.json({ message: "friend added!", info: add_friend, success: true });
         }
     } catch (error) {
-        res.json({ message: "server error: " + error, success: false })
+        res.json({ message: "server error: " + error, success: false });
     }
 }
 
 export const getFriends = async (req, res) => {
     try {
         const { ID } = req.params;
-        const friends = await Friends.findOne({ user: ID }).populate("friendList")
+        const friends = await Friends.findOne({ user: ID }).populate("friendList");
         if (friends) {
-            res.json({ list: friends.friendList, success: true })
+            res.json({ list: friends.friendList, success: true });
         }
         else {
-            res.json({ message: "User not found!", success: false })
+            res.json({ message: "User not found!", success: false });
         }
     } catch (error) {
-        res.json({ message: "server error: " + error, success: false })
+        res.json({ message: "server error: " + error, success: false });
     }
 }
