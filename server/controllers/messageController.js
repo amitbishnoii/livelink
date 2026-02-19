@@ -1,9 +1,9 @@
 import Message from "../models/Message.js";
 
-export const saveMessage = async (data) => {
+export const saveMessage = async (sender, data) => {
     try {
         const msg = await Message.create({
-            sender: data.senderID.ID,
+            sender: sender,
             receiver: data.recID,
             content: data.Message
         });

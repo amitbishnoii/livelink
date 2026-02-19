@@ -22,7 +22,7 @@ export const useSocket = ({
 
         socketRef.current.on("connect", () => {
             console.log("socket connected:", socketRef.current.id);
-            socketRef.current.emit("addUser", ID);
+            socketRef.current.emit("addUser");
         });
 
         const onSaveMessage = (data) => {
@@ -79,7 +79,6 @@ export const useSocket = ({
 
     const sendMessage = (msg) => {
         socketRef.current.emit("sendMessage", {
-            senderID: ID,
             recID: selectedUserRef.current._id,
             Message: msg,
         });
