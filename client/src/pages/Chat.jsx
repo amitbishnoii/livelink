@@ -18,8 +18,8 @@ const Chat = () => {
     const [selectedUser, setSelectedUser] = useState(null); // this is the current chat clicked by user
     const [currentChatInfo, setCurrentChatInfo] = useState(null); // info of user which is clicked by client
     const [messages, setMessages] = useState([]);
-    const [input, setInput] = useState("");
-    const [searchFriend, setSearchFriend] = useState("");
+    const [input, setInput] = useState(""); // message typed by the client
+    const [searchFriend, setSearchFriend] = useState(""); // username searched in the search bar
     const [friendCard, setFriendCard] = useState(null);
     const [activeUsers, setActiveUsers] = useState([]);
 

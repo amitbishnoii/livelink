@@ -9,7 +9,6 @@ export const saveMessage = async (sender, data) => {
         });
         return msg.toJSON();
     } catch (error) {
-        console.log('data: ', data);
         res.json({ message: error, success: false });
     }
 }

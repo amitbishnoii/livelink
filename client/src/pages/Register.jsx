@@ -20,7 +20,7 @@ const Register = () => {
     if (r.success) {
       navigate("/setup", { state: { user: r.userDetails } });
     } else {
-      seterror(r.message)
+      seterror(r.error)
     }
   };
 

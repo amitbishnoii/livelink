@@ -37,7 +37,6 @@ export const useSocket = ({
                 const myId = String(ID);
 
                 if (senderId === myId) {
-                    console.log('if ran inside onReceiveMessage');
                     return;
                 }
 
@@ -55,6 +54,7 @@ export const useSocket = ({
         socketRef.current.on("receive-message", onReceiveMessage);
 
         socketRef.current.on("userConnected", (data) => {
+            console.log('data in userConnected: ', data);
             if (friends.some(friend => friend._id === data.USER)) {
                 setActiveUsers(prev => {
                     if (!prev.includes(data.USER)) {
@@ -80,6 +80,7 @@ export const useSocket = ({
     }, [ID]);
 
     const sendMessage = (msg) => {
+        console.log('current selected user: ', selectedUserRef.current);
         socketRef.current.emit("sendMessage", {
             recID: selectedUserRef.current._id,
             Message: msg,
