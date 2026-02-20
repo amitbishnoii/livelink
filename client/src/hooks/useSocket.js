@@ -13,6 +13,7 @@ export const useSocket = ({
 
     useEffect(() => {
         if (!ID) return;
+        if (socketRef.current) return;
 
         socketRef.current = io("http://localhost:3000", {
             auth: {

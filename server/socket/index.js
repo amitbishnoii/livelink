@@ -14,9 +14,10 @@ export const initSocket = (io) => {
 
     io.on("connection", (socket) => {
         console.log("new connection at: ", socket.id);
+        socket.join(socket.userID);
+        console.log('user connected: ', socket.userID);
 
         socket.on("addUser", () => {
-            socket.join(socket.userID);
             socket.broadcast.emit("userConnected", {
                 USER: socket.userID
             });
@@ -39,6 +40,7 @@ export const initSocket = (io) => {
 
         socket.on("disconnect", () => {
             if (socket.userID) {
+                console.log('user disconnected: ', socket.userID);
                 socket.broadcast.emit("userDisconnected", {
                     USER: socket.userID
                 });
