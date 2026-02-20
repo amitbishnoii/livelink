@@ -12,7 +12,7 @@ export const getInfo = async (username) => {
 
 export const getFriends = async (ID) => {
     try {
-        const res = await apiFetch(`http://localhost:3000/friends/getFriends/${ID.ID}`);
+        const res = await apiFetch(`http://localhost:3000/friends/getFriends/${ID}`);
         const r = await res.json();
         return r.list;
     } catch (err) {
@@ -33,7 +33,7 @@ export const getFriendInfo = async (username) => {
 export const getMessages = async (sender, receiver) => {
     try {
         if (!sender || !receiver) return;
-        const res = await apiFetch(`http://localhost:3000/message/getMessage/${sender.ID}/${receiver}`);
+        const res = await apiFetch(`http://localhost:3000/message/getMessage/${sender}/${receiver}`);
         const r = await res.json();
         return r.messages;
     } catch (error) {

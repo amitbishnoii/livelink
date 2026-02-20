@@ -32,10 +32,12 @@ export const useSocket = ({
 
         const onReceiveMessage = (Data) => {
             try {
+                console.log('data on onReceiveMessage: ', Data);
                 const senderId = String(Data?.id);
                 const myId = String(ID);
 
                 if (senderId === myId) {
+                    console.log('if ran inside onReceiveMessage');
                     return;
                 }
 
@@ -49,6 +51,8 @@ export const useSocket = ({
                 console.error("onReceiveMessage error:", err);
             }
         };
+
+        socketRef.current.on("receive-message", onReceiveMessage);
 
         socketRef.current.on("userConnected", (data) => {
             if (friends.some(friend => friend._id === data.USER)) {
@@ -65,8 +69,6 @@ export const useSocket = ({
             console.log('userDisconnected Fired!!');
             setActiveUsers(prev => prev.filter(id => id !== data.USER));
         });
-
-        socketRef.current.on("receive-message", onReceiveMessage);
 
         return () => {
             if (!socketRef.current) return;

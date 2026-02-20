@@ -38,7 +38,7 @@ const Chat = () => {
     useEffect(() => {
         const load = async () => {
             const data = await getInfo(user);
-            setID(data || null);
+            setID(data.ID || null);
         };
         load();
     }, []);
@@ -165,7 +165,7 @@ const Chat = () => {
                                     {messages && messages.map((text, idx) => (
                                         <div
                                             key={idx}
-                                            className={`message-bubble ${String(text.sender) === String(ID) ? "right-align" : "left-align"
+                                            className={`message-bubble ${String(text.id) === String(ID) ? "right-align" : "left-align"
                                                 }`}
                                         >
                                             {text.content}
