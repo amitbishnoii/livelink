@@ -20,12 +20,17 @@ export const registerUser = async (req, res) => {
                 password: password,
                 email: email
             });
+            const payload = {
+                username: user.userName,
+                ID: user._id
+            }
+            const token = jwt.sign(payload, process.env.ACCESS_TOKEN);
             const newuser = await user.save();
             const friendList = new Friends({
                 user: user._id,
             });
             const newfriendList = await friendList.save();
-            res.json({ userDetails: newuser, friends: newfriendList, message: "User created!", success: true });
+            res.json({ userDetails: newuser, token: token, friends: newfriendList, message: "User created!", success: true });
         }
     } catch (error) {
         res.json({ message: "server error", error: error.message, success: false });
@@ -35,7 +40,6 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     try {
         const { username, password } = req.body;
-        console.log('payload: ', req.body);
         const user = await User.findOne({ userName: username });
         if (!user) {
             res.json({ message: "Username not Found!", success: false });

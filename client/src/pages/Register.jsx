@@ -17,6 +17,7 @@ const Register = () => {
       body: JSON.stringify(data)
     })
     const r = await res.json();
+    localStorage.setItem("token", r.token);
     if (r.success) {
       navigate("/setup", { state: { user: r.userDetails } });
     } else {

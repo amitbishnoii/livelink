@@ -14,27 +14,38 @@ const SetupProfile = () => {
   const [username, setusername] = useState(user?.userName || "");
   const [bio, setbio] = useState("");
   const [dob, setdob] = useState();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [pic, setpic] = useState();
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
-    const formData = new FormData()
+    const formData = new FormData();
     formData.append("image", pic);
     formData.append("bio", bio);
     formData.append("username", username);
     formData.append("emailID", user.email);
     formData.append("dob", dob);
+    const token = localStorage.getItem("token");
 
-    let res = await fetch("http://localhost:3000/user/updateInfo", {
-      method: "POST",
-      body: formData
-    })
+    try {
+      let res = await fetch("http://localhost:3000/user/updateInfo", {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
 
-    let r = await res.json()
-    console.log(r);
-    if (r.success) {
-      navigate("/chat", { state: { user: user.userName } })
+      let r = await res.json();
+      if (r.success) {
+        navigate("/chat", { state: { user: user.userName } })
+      }
+    } catch (error) {
+      console.log('error occured!', error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -72,7 +83,7 @@ const SetupProfile = () => {
             <h3>Setup Your Profile</h3>
             <form onSubmit={handleSubmit}>
               <label htmlFor="">Choose you Profile Picture</label>
-              <input type="file" name="image" accept="image/*" onChange={e => setpic(e.target.files[0])}/>
+              <input type="file" name="image" accept="image/*" onChange={e => setpic(e.target.files[0])} />
               <label>Username</label>
               <input type="text" placeholder="Username" value={username} onChange={(e) => setusername(e.target.value)} />
               <label>Bio</label>
@@ -80,7 +91,7 @@ const SetupProfile = () => {
               <label>Date of Birth</label>
               <input type="date" value={dob} onChange={e => setdob(e.target.value)} />
 
-              <button type="submit">Continue</button>
+              <button type="submit" disabled={loading}>{loading ? "Please wait..." : "Proceed"}</button>
             </form>
           </motion.div>
         )}
