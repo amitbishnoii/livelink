@@ -23,12 +23,14 @@ const Chat = () => {
     const [searchFriend, setSearchFriend] = useState(""); // username searched in the search bar
     const [friendCard, setFriendCard] = useState(null);
     const [activeUsers, setActiveUsers] = useState([]);
+    const [typing, setTyping] = useState(false); // if user is typing or not
 
     const { sendMessage, handleInput } = useSocket({
         ID,
         selectedUserRef,
         friends,
         typingTimeout,
+        setTyping,
         setMessages,
         setInput,
         setActiveUsers
@@ -174,6 +176,7 @@ const Chat = () => {
                                             {text.content}
                                         </div>
                                     ))}
+                                    {typing ? (<p>Typing...</p>) : (<p></p>)}
                                 </div>
 
                                 <div className="message-bar">
