@@ -10,6 +10,7 @@ import { apiFetch } from '../utils/apiFetch.js'; // this is a custom wrapper fun
 const Chat = () => {
     document.title = "Chat | LiveLink"
     const selectedUserRef = useRef(null);
+    const typingTimeout = useRef(null);
     const location = useLocation();
 
     const { user } = location.state;
@@ -23,11 +24,13 @@ const Chat = () => {
     const [friendCard, setFriendCard] = useState(null);
     const [activeUsers, setActiveUsers] = useState([]);
 
-    const { sendMessage } = useSocket({
+    const { sendMessage, handleInput } = useSocket({
         ID,
         selectedUserRef,
         friends,
+        typingTimeout,
         setMessages,
+        setInput,
         setActiveUsers
     });
 
@@ -69,7 +72,7 @@ const Chat = () => {
         const msg = input;
         setInput("");
         sendMessage(msg);
-        setMessages(prev => [...prev, { id: ID, content: msg }]);
+        setMessages(prev => [...prev, { sender: ID, content: msg }]);
     };
 
     const handleSearch = async () => {
@@ -178,7 +181,7 @@ const Chat = () => {
                                         type="text"
                                         placeholder="Message..."
                                         value={input}
-                                        onChange={e => setInput(e.target.value)}
+                                        onChange={(e) => { handleInput(e) }}
                                         onKeyDown={(e) => { if (e.key === "Enter") handleSend(); }}
                                     />
                                     <button onClick={handleSend}><BsFillSendFill /></button>

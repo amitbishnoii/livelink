@@ -38,6 +38,16 @@ export const initSocket = (io) => {
             });
         });
 
+        socket.on("startTyping", (data) => {
+            console.log('typing: ', data.room);
+            io.to(data.room).emit("typing:start");
+        });
+
+        socket.on("stopTyping", (data) => {
+            console.log('typing stopped: ', data.room);
+            io.to(data.room).emit("typing:stop");
+        });
+
         socket.on("disconnect", () => {
             if (socket.userID) {
                 console.log('user disconnected: ', socket.userID);

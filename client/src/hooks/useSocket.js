@@ -5,6 +5,8 @@ export const useSocket = ({
     ID,
     selectedUserRef,
     setMessages,
+    typingTimeout,
+    setInput,
     friends,
     setActiveUsers
 }) => {
@@ -66,12 +68,21 @@ export const useSocket = ({
             }
         });
 
+        socketRef.current.on("typing:start", () => {
+            console.log('user is typing.');
+        });
+
+        socketRef.current.on("typing:stop", () => {
+            console.log('typing stopped!');
+        });
+
         socketRef.current.on("userDisconnected", (data) => {
             console.log('userDisconnected Fired!!');
             setActiveUsers(prev => prev.filter(id => id !== data.USER));
         });
 
         return () => {
+            if (typingTimeout.current) clearTimeout(typingTimeout.current);
             if (!socketRef.current) return;
             socketRef.current.off("save-message", onSaveMessage);
             socketRef.current.off("receive-message", onReceiveMessage);
@@ -88,5 +99,18 @@ export const useSocket = ({
         });
     };
 
-    return { sendMessage };
+    const handleInput = (e) => {
+        setInput(e.target.value);
+
+        socketRef.current.emit("startTyping", { room: selectedUserRef.current._id });
+
+        if (typingTimeout.current) clearTimeout(typingTimeout.current);
+
+        typingTimeout.current = setTimeout(() => {
+            socketRef.current.emit("stopTyping", { room: selectedUserRef.current._id });
+        }, 1000);
+
+    }
+
+    return { sendMessage, handleInput };
 };
