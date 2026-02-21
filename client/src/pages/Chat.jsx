@@ -11,6 +11,8 @@ const Chat = () => {
     document.title = "Chat | LiveLink"
     const selectedUserRef = useRef(null);
     const typingTimeout = useRef(null);
+    const bottomRef = useRef(null);
+    const messageWindowRef = useRef(null);
     const location = useLocation();
 
     const { user } = location.state;
@@ -67,6 +69,14 @@ const Chat = () => {
         };
         load();
     }, [selectedUser]);
+
+    useEffect(() => {
+        if (messageWindowRef.current) {
+            messageWindowRef.current.scrollTop = messageWindowRef.current.scrollHeight;
+        } else {
+            bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [messages])
 
     const handleSend = () => {
         if (!input || !selectedUser || !ID) return;
@@ -166,7 +176,7 @@ const Chat = () => {
                             </div>
 
                             <div className="chat-window">
-                                <div className="message-window">
+                                <div className="message-window" ref={messageWindowRef}>
                                     {messages && messages.map((text, idx) => (
                                         <div
                                             key={idx}
@@ -176,19 +186,26 @@ const Chat = () => {
                                             {text.content}
                                         </div>
                                     ))}
-                                    {typing ? (<p>Typing...</p>) : (<p></p>)}
+                                    {typing && (
+                                        <div className="typing-bubble">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    )}
+                                    <div ref={bottomRef}></div>
                                 </div>
 
-                                <div className="message-bar">
-                                    <input
-                                        type="text"
-                                        placeholder="Message..."
-                                        value={input}
-                                        onChange={(e) => { handleInput(e) }}
-                                        onKeyDown={(e) => { if (e.key === "Enter") handleSend(); }}
-                                    />
-                                    <button onClick={handleSend}><BsFillSendFill /></button>
-                                </div>
+                            </div>
+                            <div className="message-bar">
+                                <input
+                                    type="text"
+                                    placeholder="Message..."
+                                    value={input}
+                                    onChange={(e) => { handleInput(e) }}
+                                    onKeyDown={(e) => { if (e.key === "Enter") handleSend(); }}
+                                />
+                                <button onClick={handleSend}><BsFillSendFill /></button>
                             </div>
                         </>
                     ) : (
