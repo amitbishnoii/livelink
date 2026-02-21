@@ -1,6 +1,8 @@
 import { saveMessage } from "../controllers/messageController.js";
 import jwt from 'jsonwebtoken';
 
+let onlineUsers = new Map();
+
 export const initSocket = (io) => {
     io.use((socket, next) => {
         const token = socket.handshake.auth.token;
@@ -18,8 +20,9 @@ export const initSocket = (io) => {
         console.log('user connected: ', socket.userID);
 
         socket.on("addUser", () => {
-            socket.broadcast.emit("userConnected", {
-                USER: socket.userID
+            onlineUsers.set(socket.userID, socket.id);
+            io.emit("userConnected", {
+                onlineUsers: Array.from(onlineUsers.keys())
             });
             console.log('rooms online: ', socket.rooms);
         });

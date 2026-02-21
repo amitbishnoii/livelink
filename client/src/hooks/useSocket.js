@@ -59,24 +59,22 @@ export const useSocket = ({
 
         socketRef.current.on("userConnected", (data) => {
             console.log('data in userConnected: ', data);
-            if (friends.some(friend => friend._id === data.USER)) {
+            data.onlineUsers.forEach(element => {
                 setActiveUsers(prev => {
-                    if (!prev.includes(data.USER)) {
-                        return [...prev, data.USER];
+                    if (!prev.includes(element)) {
+                        return [...prev, element];
                     }
                     return prev;
                 });
-            }
+            });
         });
 
         socketRef.current.on("typing:start", () => {
             setTyping(true);
-            console.log('user is typing.');
         });
-        
+
         socketRef.current.on("typing:stop", () => {
             setTyping(false);
-            console.log('typing stopped!');
         });
 
         socketRef.current.on("userDisconnected", (data) => {
@@ -87,6 +85,8 @@ export const useSocket = ({
         return () => {
             if (typingTimeout.current) clearTimeout(typingTimeout.current);
             if (!socketRef.current) return;
+            socketRef.current.off("userConnected");
+            socketRef.current.off("userDisconnected");
             socketRef.current.off("save-message", onSaveMessage);
             socketRef.current.off("receive-message", onReceiveMessage);
             socketRef.current.off("typing:start");
@@ -97,7 +97,6 @@ export const useSocket = ({
     }, [ID]);
 
     const sendMessage = (msg) => {
-        console.log('current selected user: ', selectedUserRef.current);
         socketRef.current.emit("sendMessage", {
             recID: selectedUserRef.current._id,
             Message: msg,
