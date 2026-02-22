@@ -8,7 +8,6 @@ export const useSocket = ({
     typingTimeout,
     setTyping,
     setInput,
-    friends,
     setActiveUsers
 }) => {
 

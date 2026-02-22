@@ -30,7 +30,6 @@ const Chat = () => {
     const { sendMessage, handleInput } = useSocket({
         ID,
         selectedUserRef,
-        friends,
         typingTimeout,
         setTyping,
         setMessages,
