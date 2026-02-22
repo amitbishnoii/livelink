@@ -9,6 +9,27 @@
     overflow: hidden;
 }
 
+.heading {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.heading button {
+    background-color: #0d0d0d;
+    color: #e0e0ff;
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.heading button:hover {
+    background-color: #353552;
+    color: #ffffff;
+}
+
 h2 {
     margin-left: 20px;
     color: #ffffff;
@@ -120,7 +141,8 @@ h2 {
 
 .center-main {
     width: 65vw;
-    background: radial-gradient(circle at top left, #1c1c1c, #0f0f0f);
+    height: 89vh;
+    background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1f 100%);
     backdrop-filter: blur(12px);
     border-right: 1px solid #2f2f2f;
     display: flex;
@@ -129,7 +151,6 @@ h2 {
     position: relative;
     overflow: hidden;
     padding: 20px;
-    height: 85vh;
 }
 
 .center-main::before {
@@ -192,7 +213,7 @@ h2 {
 
 .message-window {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     position: relative;
     scroll-behavior: smooth;
     padding-right: 10px;

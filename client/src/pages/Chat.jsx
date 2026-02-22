@@ -2,10 +2,11 @@ import React, { useRef, useState, useEffect } from 'react';
 import "../CSS/Chat.css";
 import { getInfo, getFriends, getFriendInfo, getMessages } from '../api/chatApi';
 import { BsFillSendFill } from "react-icons/bs";
-import { useLocation } from 'react-router-dom';
+import { redirect, useLocation } from 'react-router-dom';
 import { IoPersonAdd } from "react-icons/io5";
 import { useSocket } from "../hooks/useSocket.js";
 import { apiFetch } from '../utils/apiFetch.js'; // this is a custom wrapper function which wraps the token header in the fetch api
+import { FaGithub } from "react-icons/fa";
 
 const Chat = () => {
     document.title = "Chat | LiveLink"
@@ -116,9 +117,16 @@ const Chat = () => {
         }
     };
 
+    const redirect = (url) => {
+        window.open(url, "_blank");
+    };
+
     return (
         <div className="chat-main">
-            <h2>LiveLink Chat App</h2>
+            <div className="heading">
+                <h2>LiveLink Chat App</h2>
+                <button onClick={() => redirect("https://github.com/amitbishnoii/livelink")}><FaGithub size={20} /></button>
+            </div>
             <div className="content-main">
                 <div className="left-bar">
                     <h3>Messages</h3>
