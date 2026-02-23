@@ -78,7 +78,7 @@ export const useSocket = ({
 
         socketRef.current.on("userDisconnected", (data) => {
             console.log('userDisconnected Fired!!');
-            setActiveUsers(prev => prev.filter(id => id !== data.USER));
+            setActiveUsers(prev => prev.filter(element => element !== data.USER));
         });
 
         return () => {

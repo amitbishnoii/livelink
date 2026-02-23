@@ -1,8 +1,46 @@
+:root {
+    --bg-main: #0b0b0b;
+    --bg-secondary: #1a1a1a;
+    --bg-card: #232323;
+    --bg-hover: #2e2e2e;
+    --bg-input: #1e1f22;
+    --bg-bubble-left: #36393f;
+    --bg-bubble-right: #5865f2;
+
+    --text-primary: #ffffff;
+    --text-secondary: #aaaaaa;
+
+    --border-color: #2f2f2f;
+    --accent: #5865f2;
+    --accent-hover: #4752c4;
+
+    --status-online: #00ff51;
+}
+
+.light-theme {
+    --bg-main: #f5f7fb;
+    --bg-secondary: #ffffff;
+    --bg-card: #f0f2f5;
+    --bg-hover: #e4e6eb;
+    --bg-input: #ffffff;
+    --bg-bubble-left: #e4e6eb;
+    --bg-bubble-right: #4f6df5;
+
+    --text-primary: #1c1e21;
+    --text-secondary: #555;
+
+    --border-color: #ddd;
+    --accent: #4f6df5;
+    --accent-hover: #3c56d0;
+
+    --status-online: #22c55e;
+}
+
 .chat-main {
     display: flex;
     flex-direction: column;
-    background-color: #0b0b0b;
-    color: #f5f5f5;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
     width: 100vw;
     height: 100vh;
     font-family: 'Poppins', sans-serif;
@@ -13,6 +51,7 @@
     display: flex;
     align-items: center;
     gap: 40px;
+    color: var(--text-primary);
 }
 
 .heading button {
@@ -32,7 +71,7 @@
 
 h2 {
     margin-left: 20px;
-    color: #ffffff;
+    color: var(--text-primary);
     font-weight: 600;
     letter-spacing: 1px;
 }
@@ -43,11 +82,11 @@ h2 {
 }
 
 .left-bar {
-    background-color: #1a1a1a;
+    background-color: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
     width: 20vw;
     padding-left: 20px;
     padding-right: 20px;
-    border-right: 1px solid #2f2f2f;
     overflow-y: auto;
     min-height: 0;
 }
@@ -58,15 +97,15 @@ h2 {
 }
 
 .friend-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #1e1e1e;
-    border: 1px solid #2a2a2a;
     border-radius: 10px;
     padding: 10px 14px;
     margin: 10px 0;
-    color: #f5f5f5;
 }
 
 .friend-pic {
@@ -112,19 +151,19 @@ h2 {
 }
 
 .profile-card {
+    background-color: var(--bg-card);
     display: flex;
     gap: 12px;
     align-items: center;
     margin-top: 8px;
     padding: 20px 25px;
-    background-color: #232323;
     border-radius: 10px;
     transition: background-color 0.25s ease, transform 0.2s ease;
     cursor: pointer;
 }
 
 .profile-card:hover {
-    background-color: #2e2e2e;
+    background-color: var(--bg-hover);
     transform: translateY(-2px);
 }
 
@@ -176,12 +215,12 @@ h2 {
 }
 
 .message-bubble {
+    color: var(--text-primary);
     max-width: 60%;
     padding: 10px 14px;
     border-radius: 10px;
     font-size: 14px;
     line-height: 1.4;
-    color: #eaeaea;
     background: #2b2d31;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
     word-wrap: break-word;
@@ -190,22 +229,22 @@ h2 {
 }
 
 .right-align {
+    background: var(--bg-bubble-right);
+    color: white;
     position: relative;
     z-index: 10;
     margin-left: auto;
-    background: #5865f2;
-    color: white;
     text-align: left;
     border-radius: 10px;
     margin-bottom: 5px;
 }
 
 .left-align {
+    background: var(--bg-bubble-left);
+    color: var(--text-primary);
     position: relative;
     z-index: 10;
     margin-right: auto;
-    background: #36393f;
-    color: #e5e5e5;
     border: none;
     border-radius: 10px;
     margin-bottom: 5px;
@@ -301,10 +340,10 @@ h2 {
 
 input[type="text"],
 textarea {
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     flex: 1;
-    background-color: #1e1f22;
-    color: #f5f5f5;
-    border: 1px solid #2f2f2f;
     border-radius: 8px;
     padding: 12px;
     font-size: 15px;
@@ -313,14 +352,14 @@ textarea {
 
 input[type="text"]:focus,
 textarea:focus {
-    outline: none;
-    border-color: #5865f2;
-    background-color: #2a2b30;
+    border-color: var(--accent);
     box-shadow: 0 0 8px rgba(88, 101, 242, 0.4);
+    outline: none;
+    background-color: #2a2b30;
 }
 
 button {
-    background-color: #5865f2;
+    background-color: var(--accent);
     color: white;
     border: none;
     border-radius: 8px;
@@ -332,7 +371,7 @@ button {
 }
 
 button:hover {
-    background-color: #4752c4;
+    background-color: var(--accent-hover);
     transform: translateY(-1px);
 }
 
@@ -341,13 +380,13 @@ button:active {
 }
 
 .right-bar {
+    background-color: var(--bg-secondary);
+    border-left: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #181818;
     width: 15vw;
     padding: 14px;
-    border-left: 1px solid #2f2f2f;
     overflow-y: auto;
     min-height: 0;
 }

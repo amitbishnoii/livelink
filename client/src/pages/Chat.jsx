@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import "../CSS/Chat.css";
 import { getInfo, getFriends, getFriendInfo, getMessages } from '../api/chatApi';
 import { BsFillSendFill } from "react-icons/bs";
-import { redirect, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { IoPersonAdd } from "react-icons/io5";
 import { useSocket } from "../hooks/useSocket.js";
 import { apiFetch } from '../utils/apiFetch.js'; // this is a custom wrapper function which wraps the token header in the fetch api
@@ -27,6 +27,7 @@ const Chat = () => {
     const [friendCard, setFriendCard] = useState(null);
     const [activeUsers, setActiveUsers] = useState([]);
     const [typing, setTyping] = useState(false); // if user is typing or not
+    const [isLight, setIsLight] = useState(false); // theme of app
 
     const { sendMessage, handleInput } = useSocket({
         ID,
@@ -87,6 +88,11 @@ const Chat = () => {
         setMessages(prev => [...prev, { sender: ID, content: msg }]);
     };
 
+    const toggleTheme = () => {
+        setIsLight(!isLight);
+        document.body.classList.toggle("light-theme");
+    }
+
     const handleSearch = async () => {
         try {
             if (!searchFriend) return;
@@ -125,7 +131,12 @@ const Chat = () => {
         <div className="chat-main">
             <div className="heading">
                 <h2>LiveLink Chat App</h2>
-                <button onClick={() => redirect("https://github.com/amitbishnoii/livelink")}><FaGithub size={20} /></button>
+                <button onClick={() => redirect("https://github.com/amitbishnoii/livelink")}>
+                    <FaGithub size={20} />
+                </button>
+                <button onClick={toggleTheme}>
+                    {isLight ? "Dark Mode" : "Light Mode"}
+                </button>
             </div>
             <div className="content-main">
                 <div className="left-bar">
