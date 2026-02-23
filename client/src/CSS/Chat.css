@@ -404,3 +404,24 @@ button:active {
         transform: scale(1.2);
     }
 }
+
+@media (width < 1600px) {
+    .right-bar {
+        display: none;
+    }
+    .center-main {
+        width: 85vw;
+    }
+    .search-bar {
+        flex-direction: column;
+    }
+}
+
+@media (width < 1000px) {
+    .left-bar {
+        display: none;
+    }
+    .center-main {
+        width: 100vw;
+    }
+}
