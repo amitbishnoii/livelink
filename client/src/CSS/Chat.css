@@ -26,6 +26,7 @@ h2 {
 .content-main {
     display: flex;
     height: 100%;
+    min-width: 0;
 }
 
 .left-bar {
@@ -127,7 +128,7 @@ h2 {
 
 .center-main {
     width: 65vw;
-    height: 89vh;
+    height: 90%;
     background: var(--bg-chat-gradient);
     backdrop-filter: blur(12px);
     display: flex;
@@ -423,5 +424,14 @@ button:active {
     }
     .center-main {
         width: 100vw;
+    }
+}
+
+@media (width < 500px) {
+    .heading {
+        display: none;
+    }
+    .center-main {
+        height: 96%;
     }
 }
