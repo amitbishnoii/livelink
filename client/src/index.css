@@ -1,5 +1,45 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+:root {
+    --bg-main: #0b0b0b;
+    --bg-secondary: #1a1a1a;
+    --bg-card: #232323;
+    --bg-hover: #2e2e2e;
+    --bg-input: #1e1f22;
+    --bg-bubble-left: #36393f;
+    --bg-bubble-right: #5865f2;
+    --bg-chat-gradient: linear-gradient(135deg, #0d0d0d 0%, #1a1a1f 100%);
+
+    --text-primary: #ffffff;
+    --text-secondary: #aaaaaa;
+
+    --border-color: #2f2f2f;
+    --accent: #5865f2;
+    --accent-hover: #4752c4;
+
+    --status-online: #00ff51;
+}
+
+.light-theme {
+    --bg-main: #f5f7fb;
+    --bg-secondary: #ffffff;
+    --bg-card: #f0f2f5;
+    --bg-hover: #e4e6eb;
+    --bg-input: #ffffff;
+    --bg-bubble-left: #acaeb3;
+    --bg-bubble-right: #4f6df5;
+    --bg-chat-gradient: #f5f7fb;
+
+    --text-primary: #1c1e21;
+    --text-secondary: #555;
+
+    --border-color: #ddd;
+    --accent: #4f6df5;
+    --accent-hover: #3c56d0;
+
+    --status-online: #22c55e;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -11,11 +51,10 @@ body {
   font-size: 14px;
   color: red;
 }
-
 html, body {
-    color-scheme: dark;
+    color-scheme: light dark;
     scrollbar-width: thin;
-    scrollbar-color: #2c2f36 #1a1a1a;
+    scrollbar-color: var(--border-color) var(--bg-secondary);
 }
 
 html::-webkit-scrollbar {
@@ -24,22 +63,22 @@ html::-webkit-scrollbar {
 }
 
 html::-webkit-scrollbar-track {
-    background: #1a1a1a;
+    background: var(--bg-secondary);
     border-radius: 10px;
 }
 
 html::-webkit-scrollbar-thumb {
-    background-color: #2c2f36;
+    background-color: var(--border-color);
     border-radius: 10px;
-    border: 2px solid #1a1a1a;
+    border: 2px solid var(--bg-secondary);
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 html::-webkit-scrollbar-thumb:hover {
-    background-color: #434758;
-    box-shadow: 0 0 6px rgba(67, 71, 88, 0.5);
+    background-color: var(--accent);
+    box-shadow: 0 0 6px rgba(88, 101, 242, 0.4);
 }
 
 html::-webkit-scrollbar-corner {
-    background: #1a1a1a;
+    background: var(--bg-secondary);
 }

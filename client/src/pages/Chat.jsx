@@ -7,6 +7,8 @@ import { IoPersonAdd } from "react-icons/io5";
 import { useSocket } from "../hooks/useSocket.js";
 import { apiFetch } from '../utils/apiFetch.js'; // this is a custom wrapper function which wraps the token header in the fetch api
 import { FaGithub } from "react-icons/fa";
+import { MdDarkMode } from "react-icons/md";
+import { MdLightMode } from "react-icons/md";
 
 const Chat = () => {
     document.title = "Chat | LiveLink"
@@ -135,7 +137,7 @@ const Chat = () => {
                     <FaGithub size={20} />
                 </button>
                 <button onClick={toggleTheme}>
-                    {isLight ? "Dark Mode" : "Light Mode"}
+                    {isLight ? <MdDarkMode size={20} /> : <MdLightMode size={20} />}
                 </button>
             </div>
             <div className="content-main">
