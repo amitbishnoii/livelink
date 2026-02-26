@@ -34,6 +34,23 @@
     min-height: 0;
 }
 
+.heading-left-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.heading-left-bar button {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+    border-radius: 100px;
+    height: 30px;
+    width: 30px;
+}
+
 .search-bar {
     display: flex;
     gap: 10px;
@@ -443,6 +460,9 @@ button:active {
 }
 
 @media (width < 500px) {
+    .left-bar {
+        width: 90%;
+    }
     .heading {
         padding-left: 0;
         justify-content: space-around;
