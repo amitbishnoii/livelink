@@ -150,11 +150,11 @@ const Chat = () => {
                 <div className={`left-bar ${showPanel ? "open" : ""}`}>
                     <div className='heading-left-bar'>
                         <h3>Messages</h3>
-                        <div className="close-btn">
-                            <button onClick={() => setShowPanel(!showPanel)}>
+                        { showPanel && <div className="close-btn">
+                            <button onClick={() => setShowPanel(false)}>
                                 <IoMdClose size={20} />
                             </button>
-                        </div>
+                        </div>}
                     </div>
                     <div className="search-bar">
                         <input
