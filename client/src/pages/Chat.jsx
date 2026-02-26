@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { useSocket } from "../hooks/useSocket.js";
 import { apiFetch } from '../utils/apiFetch.js'; // this is a custom wrapper function which wraps the token header in the fetch api
 import { FaGithub } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
 import { MdDarkMode } from "react-icons/md";
 import { MdLightMode } from "react-icons/md";
 import { IoPersonAdd } from "react-icons/io5";
@@ -132,14 +133,12 @@ const Chat = () => {
         window.open(url, "_blank");
     };
 
-    const hamburgerMenu = () => {
-        setShowPanel(!showPanel);
-    };
-
     return (
         <div className="chat-main">
             <div className="heading">
-                <button className='hamburger-btn' onClick={hamburgerMenu()}><RxHamburgerMenu /></button>
+                <button className='hamburger-btn' onClick={() => setShowPanel(!showPanel)}>
+                    <RxHamburgerMenu />
+                </button>
                 <button onClick={() => redirect("https://github.com/amitbishnoii/livelink")}>
                     <FaGithub size={20} />
                 </button>
@@ -150,6 +149,11 @@ const Chat = () => {
             <div className="content-main">
                 <div className={`left-bar ${showPanel ? "open" : ""}`}>
                     <h3>Messages</h3>
+                    <div className="close-btn">
+                        <button onClick={() => setShowPanel(!showPanel)}>
+                            <IoMdClose size={20} />
+                        </button>
+                    </div>
                     <div className="search-bar">
                         <input
                             type="text"
