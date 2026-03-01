@@ -245,7 +245,7 @@
 .chat-profile {
     display: flex;
     align-items: center;
-    gap: 20px;
+    justify-content: space-between;
     padding-bottom: 10px;
     position: relative;
 }
@@ -262,6 +262,11 @@
             rgb(85, 85, 85) 25%,
             rgb(78, 78, 78) 75%,
             transparent);
+}
+
+.user {
+    display: flex;
+    gap: 15px;
 }
 
 .avatar {
@@ -417,6 +422,18 @@ button:active {
     display: none;
 }
 
+.three-dot-button {
+    display: none;
+}
+
+.three-dot-button button {
+    padding: 0;
+    background-color: var(--bg-chat-gradient);
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+}
+
 @keyframes typingPulse {
 
     0%,
@@ -435,6 +452,10 @@ button:active {
 @media (width < 1600px) {
     .right-bar {
         display: none;
+    }
+
+    .three-dot-button {
+        display: block;
     }
 
     .center-main {
@@ -465,15 +486,17 @@ button:active {
     .left-bar {
         position: fixed;
         top: 0;
-        left: -100%;
+        left: 0;
         height: 100dvh;
         width: 300px;
-        transition: left 0.3s ease;
+        transform: translateX(-100%);
+        transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         z-index: 100;
+        will-change: transform;
     }
 
     .left-bar.open {
-        left: 0;
+        transform: translateX(0);
     }
 
     .center-main {

@@ -9,9 +9,9 @@ import { IoMdClose } from "react-icons/io";
 import { MdDarkMode } from "react-icons/md";
 import { MdLightMode } from "react-icons/md";
 import { IoPersonAdd } from "react-icons/io5";
-import { IoMdSettings } from "react-icons/io";
 import { BsFillSendFill } from "react-icons/bs";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const Chat = () => {
     document.title = "Chat | LiveLink"
@@ -26,13 +26,13 @@ const Chat = () => {
     const [friends, setFriends] = useState([]); // these are the friends of the user
     const [selectedUser, setSelectedUser] = useState(null); // this is the current chat clicked by user
     const [currentChatInfo, setCurrentChatInfo] = useState(null); // info of user which is clicked by client
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([]); // messages of client and friend fetched from backend
     const [input, setInput] = useState(""); // message typed by the client
     const [searchFriend, setSearchFriend] = useState(""); // username searched in the search bar
     const [friendCard, setFriendCard] = useState(null);
-    const [activeUsers, setActiveUsers] = useState([]);
+    const [activeUsers, setActiveUsers] = useState([]); // current online users
     const [typing, setTyping] = useState(false); // if user is typing or not
-    const [isLight, setIsLight] = useState(false); // theme of app
+    const [isLight, setIsLight] = useState(false); // theme of app (default dark)
     const [showPanel, setShowPanel] = useState(false); // hamburger menu for side panel
 
     const { sendMessage, handleInput } = useSocket({
@@ -139,7 +139,7 @@ const Chat = () => {
                 <button className='hamburger-btn' onClick={() => setShowPanel(!showPanel)}>
                     <RxHamburgerMenu />
                 </button>
-                <button onClick={() => redirect("https://github.com/amitbishnoii/livelink")}>
+                <button onClick={() => redirect("https://github.com/amitbishnoii?tab=overview&from=2026-02-01&to=2026-02-26")}>
                     <FaGithub size={20} />
                 </button>
                 <button onClick={toggleTheme}>
@@ -150,7 +150,7 @@ const Chat = () => {
                 <div className={`left-bar ${showPanel ? "open" : ""}`}>
                     <div className='heading-left-bar'>
                         <h3>Messages</h3>
-                        { showPanel && <div className="close-btn">
+                        {showPanel && <div className="close-btn">
                             <button onClick={() => setShowPanel(false)}>
                                 <IoMdClose size={20} />
                             </button>
@@ -194,17 +194,24 @@ const Chat = () => {
                     {selectedUser ? (
                         <>
                             <div className="chat-profile">
-                                <div className="avatar">
-                                    <img src={currentChatInfo?.profilePic} alt="" />
-                                    <div className={
-                                        activeUsers.some(user => user === selectedUser._id)
-                                            ? "active-status"
-                                            : ""
-                                    }></div>
+                                <div className="user">
+                                    <div className="avatar">
+                                        <img src={currentChatInfo?.profilePic} alt="" />
+                                        <div className={
+                                            activeUsers.some(user => user === selectedUser._id)
+                                                ? "active-status"
+                                                : ""
+                                        }></div>
+                                    </div>
+                                    <div className="userinfo">
+                                        <p>{selectedUser.firstName}</p>
+                                        <span>@{selectedUser.userName}</span>
+                                    </div>
                                 </div>
-                                <div className="userinfo">
-                                    <p>{selectedUser.firstName}</p>
-                                    <span>@{selectedUser.userName}</span>
+                                <div className='three-dot-button'>
+                                    <button>
+                                        {<BsThreeDotsVertical size={25} color={isLight ? "black" : "white"} />}
+                                    </button>
                                 </div>
                             </div>
 
