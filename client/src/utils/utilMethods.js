@@ -8,7 +8,7 @@ export const convertTime = (time) => {
 };
 
 export const convertDate = (date) => {
-    return new Date(date).toLocaleDateString();
+    return new Date(date).toLocaleDateString([], {day: 'numeric', month:'short'});
 };
 
 export const redirect = (url) => {

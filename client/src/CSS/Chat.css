@@ -434,6 +434,15 @@ button:active {
     border-radius: 40px;
 }
 
+.message-timestamp {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    margin: 15px 0;
+    opacity: 0.6;
+}
+
 @keyframes typingPulse {
 
     0%,

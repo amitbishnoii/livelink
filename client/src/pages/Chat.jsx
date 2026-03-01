@@ -216,16 +216,14 @@ const Chat = () => {
                                 <div className="message-window" ref={messageWindowRef}>
                                     {messages && messages.map((messageObj, idx) => (
                                         <>
-                                            <div
-                                                key={idx}
-                                                className={`message-bubble ${String(messageObj.sender) === String(ID) ? "right-align" : "left-align"
-                                                    }`}
-                                            >
-                                                {messageObj.content}
-                                            </div>
                                             <span className='message-timestamp'>
                                                 {convertDate(messageObj.date)} at {convertTime(messageObj.date)}
                                             </span>
+                                            <div
+                                                key={idx}
+                                                className={`message-bubble ${String(messageObj.sender) === String(ID) ? "right-align" : "left-align"}`}>
+                                                {messageObj.content}
+                                            </div>
                                         </>
                                     ))}
                                     {typing && (
