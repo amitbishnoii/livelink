@@ -4,6 +4,7 @@ import { getInfo, getFriends, getFriendInfo, getMessages } from '../api/chatApi'
 import { useLocation } from 'react-router-dom';
 import { useSocket } from "../hooks/useSocket.js";
 import { apiFetch } from '../utils/apiFetch.js'; // this is a custom wrapper function which wraps the token header in the fetch api
+import { redirect, convertTime, convertDate } from '../utils/utilMethods.js';
 import { FaGithub } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { MdDarkMode } from "react-icons/md";
@@ -129,10 +130,6 @@ const Chat = () => {
         }
     };
 
-    const redirect = (url) => {
-        window.open(url, "_blank");
-    };
-
     return (
         <div className="chat-main">
             <div className="heading">
@@ -217,14 +214,19 @@ const Chat = () => {
 
                             <div className="chat-window">
                                 <div className="message-window" ref={messageWindowRef}>
-                                    {messages && messages.map((text, idx) => (
-                                        <div
-                                            key={idx}
-                                            className={`message-bubble ${String(text.sender) === String(ID) ? "right-align" : "left-align"
-                                                }`}
-                                        >
-                                            {text.content}
-                                        </div>
+                                    {messages && messages.map((messageObj, idx) => (
+                                        <>
+                                            <div
+                                                key={idx}
+                                                className={`message-bubble ${String(messageObj.sender) === String(ID) ? "right-align" : "left-align"
+                                                    }`}
+                                            >
+                                                {messageObj.content}
+                                            </div>
+                                            <span className='message-timestamp'>
+                                                {convertDate(messageObj.date)} at {convertTime(messageObj.date)}
+                                            </span>
+                                        </>
                                     ))}
                                     {typing && (
                                         <div className="typing-bubble">
