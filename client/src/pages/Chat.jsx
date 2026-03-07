@@ -143,7 +143,10 @@ const Chat = () => {
                 body: JSON.stringify({ senderID: ID, receiverID: selectedUserRef.current._id })
             });
             const r = await res.json();
-            console.log('message from clearChat: ', r);
+            if (r.success) {
+                alert("Chat Cleared!");
+                setMessages([]);
+            }
         } catch (error) {
             console.log('error occured: ', error);
         }

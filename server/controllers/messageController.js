@@ -32,7 +32,7 @@ export const getMessage = async (req, res) => {
 export const clearChat = async (req, res) => {
     try {
         const { senderID, receiverID } = req.body;
-        const clear = await Message.findOneAndDelete({
+        const clear = await Message.deleteMany({
             $or: [
                 { sender: senderID, receiver: receiverID },
                 { sender: receiverID, receiver: senderID },
@@ -41,7 +41,7 @@ export const clearChat = async (req, res) => {
         if (clear) {
             res.json({ message: "Chat Cleared!", success: true });
         }
-        res.json({ message: "error", senderID, receiverID, success: false });
+        res.json({ message: "Can't Clear Chat", success: false });
     } catch (error) {
         res.json({ message: error, success: false });
     }
