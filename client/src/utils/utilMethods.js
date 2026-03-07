@@ -8,6 +8,16 @@ export const convertTime = (time) => {
 };
 
 export const convertDate = (date) => {
+    const newDate = new Date(date);
+    const today = new Date();
+    if (today.toDateString() === newDate.toDateString()) {
+        return "Today";
+    }
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    if (newDate.toDateString() === yesterday.toDateString()) {
+        return "Yesterday";
+    }
     return new Date(date).toLocaleDateString([], {day: 'numeric', month:'short'});
 };
 

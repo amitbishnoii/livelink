@@ -130,6 +130,11 @@ const Chat = () => {
         }
     };
 
+    const handleSelectUser = (info) => {
+        setSelectedUser(info);
+        setShowPanel(false);
+    };
+
     return (
         <div className="chat-main">
             <div className="heading">
@@ -178,7 +183,7 @@ const Chat = () => {
                             <div
                                 key={i}
                                 className="profile-card"
-                                onClick={() => setSelectedUser(info)}
+                                onClick={() => handleSelectUser(info)}
                             >
                                 <img src={info.profilePic} alt={info.name} className="profile-pic" />
                                 <p>{info.firstName}</p>
@@ -193,12 +198,11 @@ const Chat = () => {
                             <div className="chat-profile">
                                 <div className="user">
                                     <div className="avatar">
-                                        <img src={currentChatInfo?.profilePic} alt="" />
-                                        <div className={
+                                        <img src={currentChatInfo?.profilePic} alt="" className={
                                             activeUsers.some(user => user === selectedUser._id)
                                                 ? "active-status"
                                                 : ""
-                                        }></div>
+                                        } />
                                     </div>
                                     <div className="userinfo">
                                         <p>{selectedUser.firstName}</p>
@@ -217,7 +221,9 @@ const Chat = () => {
                                     {messages && messages.map((messageObj, idx) => (
                                         <>
                                             <span className='message-timestamp'>
-                                                {convertDate(messageObj.date)} at {convertTime(messageObj.date)}
+                                                {messageObj.date
+                                                    ? `${convertDate(messageObj.date)} at ${convertTime(messageObj.date)}`
+                                                    : "Today"}
                                             </span>
                                             <div
                                                 key={idx}
