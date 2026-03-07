@@ -426,9 +426,10 @@ button:active {
 
 .three-dot-button {
     display: none;
+    position: relative;
 }
 
-.three-dot-button > button:first-child {
+.three-dot-button>button:first-child {
     padding: 0;
     background-color: var(--bg-chat-gradient);
     width: 40px;
@@ -436,29 +437,56 @@ button:active {
     border-radius: 40px;
 }
 
-.mobile-menu {
-  position: absolute;
-  top: 40px;
-  right: 0;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
+.mobileMenu {
+    position: absolute;
+    top: 40px;
+    right: 20px;
+    z-index: 1000;          
+    width: 140px;           
+    border-radius: 12px;    
+    background-color: #2a2a2a;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;               
+    padding: 8px 0;         
+    opacity: 0;             
+    transform: translateY(-10px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;  
 }
 
-.mobile-menu button {
-  padding: 10px;
-  border: none;
-  background: none;
-  text-align: left;
-  cursor: pointer;
+.mobileMenu button {
+    width: 90%;             
+    padding: 10px;           
+    border: none;            
+    background: none;        
+    text-align: left;        
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #eee;
+    transition: background 0.2s ease, color 0.2s ease;
+    display: flex;
+    align-items: center;     
+    gap: 6px;  
 }
 
-.mobile-menu button:hover {
-  background: #f0f0f0;
+.mobileMenu button:hover {
+    background: #f0f0f0;
+}
+
+.mobileMenu.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mobileMenu.hide {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
 }
 
 .message-timestamp {

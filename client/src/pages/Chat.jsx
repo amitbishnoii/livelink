@@ -232,17 +232,13 @@ const Chat = () => {
                                     </div>
                                 </div>
                                 <div className='three-dot-button'>
-                                    <button>
-                                        {<BsThreeDotsVertical size={25} color={isLight ? "black" : "white"} onClick={() => setMenuOpen(!menuOpen)} />}
+                                    <button onClick={() => setMenuOpen(!menuOpen)}>
+                                        <BsThreeDotsVertical size={25} color={isLight ? "black" : "white"} />
                                     </button>
-                                    {menuOpen && <div className='mobileMenu'>
-                                        <button style={{ backgroundColor: "red" }}>
-                                            Block {selectedUser.firstName}
-                                        </button>
-                                        <button onClick={() => handleClearChat()}>
-                                            Clear Chat
-                                        </button>
-                                    </div>}
+                                    <div className={`mobileMenu ${menuOpen ? 'show' : 'hide'}`}>
+                                        <button>Block {selectedUser.firstName}</button>
+                                        <button onClick={() => handleClearChat()}>Clear Chat</button>
+                                    </div>
                                 </div>
                             </div>
 
