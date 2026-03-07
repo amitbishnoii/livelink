@@ -35,6 +35,7 @@ const Chat = () => {
     const [typing, setTyping] = useState(false); // if user is typing or not
     const [isLight, setIsLight] = useState(false); // theme of app (default dark)
     const [showPanel, setShowPanel] = useState(false); // hamburger menu for side panel
+    const [menuOpen, setMenuOpen] = useState(false); // three dot menu in width < 1600px
 
     const { sendMessage, handleInput } = useSocket({
         ID,
@@ -137,6 +138,10 @@ const Chat = () => {
 
     const handleClearChat = async () => {
         try {
+            if (messages.length == 0) {
+                alert("Chat is already clear");
+                return;
+            }
             const res = await apiFetch("http://localhost:3000/message/clear", {
                 method: "DELETE",
                 headers: { 'Content-Type': 'application/json' },
@@ -144,7 +149,7 @@ const Chat = () => {
             });
             const r = await res.json();
             if (r.success) {
-                alert("Chat Cleared!");
+                alert(`${r.deleted} message cleared!`);
                 setMessages([]);
             }
         } catch (error) {
@@ -228,8 +233,16 @@ const Chat = () => {
                                 </div>
                                 <div className='three-dot-button'>
                                     <button>
-                                        {<BsThreeDotsVertical size={25} color={isLight ? "black" : "white"} />}
+                                        {<BsThreeDotsVertical size={25} color={isLight ? "black" : "white"} onClick={() => setMenuOpen(!menuOpen)} />}
                                     </button>
+                                    {menuOpen && <div className='mobileMenu'>
+                                        <button style={{ backgroundColor: "red" }}>
+                                            Block {selectedUser.firstName}
+                                        </button>
+                                        <button onClick={() => handleClearChat()}>
+                                            Clear Chat
+                                        </button>
+                                    </div>}
                                 </div>
                             </div>
 

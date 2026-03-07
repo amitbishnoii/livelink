@@ -428,12 +428,37 @@ button:active {
     display: none;
 }
 
-.three-dot-button button {
+.three-dot-button > button:first-child {
     padding: 0;
     background-color: var(--bg-chat-gradient);
     width: 40px;
     height: 40px;
     border-radius: 40px;
+}
+
+.mobile-menu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-menu button {
+  padding: 10px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mobile-menu button:hover {
+  background: #f0f0f0;
 }
 
 .message-timestamp {

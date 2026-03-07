@@ -38,8 +38,8 @@ export const clearChat = async (req, res) => {
                 { sender: receiverID, receiver: senderID },
             ]
         });
-        if (clear) {
-            res.json({ message: "Chat Cleared!", success: true });
+        if (clear.acknowledged) {
+            res.json({ message: "Chat Cleared!", deleted: clear.deletedCount, success: true });
         }
         res.json({ message: "Can't Clear Chat", success: false });
     } catch (error) {
