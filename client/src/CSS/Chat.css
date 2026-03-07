@@ -347,6 +347,12 @@ button:active {
     padding: 14px;
     overflow-y: auto;
     min-height: 0;
+    gap: 30px;
+}
+
+.right-bar .util-buttons {
+    display: flex;
+    gap: 10px;
 }
 
 .user-info {

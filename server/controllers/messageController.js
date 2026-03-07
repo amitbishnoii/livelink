@@ -28,3 +28,21 @@ export const getMessage = async (req, res) => {
         res.json({ message: error, success: false });
     }
 }
+
+export const clearChat = async (req, res) => {
+    try {
+        const { senderID, receiverID } = req.body;
+        const clear = await Message.findOneAndDelete({
+            $or: [
+                { sender: senderID, receiver: receiverID },
+                { sender: receiverID, receiver: senderID },
+            ]
+        });
+        if (clear) {
+            res.json({ message: "Chat Cleared!", success: true });
+        }
+        res.json({ message: "error", senderID, receiverID, success: false });
+    } catch (error) {
+        res.json({ message: error, success: false });
+    }
+}

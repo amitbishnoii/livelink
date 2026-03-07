@@ -135,6 +135,20 @@ const Chat = () => {
         setShowPanel(false);
     };
 
+    const handleClearChat = async () => {
+        try {
+            const res = await apiFetch("http://localhost:3000/message/clear", {
+                method: "DELETE",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ senderID: ID, receiverID: selectedUserRef.current._id })
+            });
+            const r = await res.json();
+            console.log('message from clearChat: ', r);
+        } catch (error) {
+            console.log('error occured: ', error);
+        }
+    }
+
     return (
         <div className="chat-main">
             <div className="heading">
@@ -261,11 +275,21 @@ const Chat = () => {
 
                 <div className="right-bar">
                     {selectedUser && currentChatInfo && (
-                        <div className="user-info">
-                            <img src={currentChatInfo.profilePic} alt="" />
-                            <h5>{selectedUser.firstName}</h5>
-                            <span>{selectedUser.bio}</span>
-                        </div>
+                        <>
+                            <div className="user-info">
+                                <img src={currentChatInfo.profilePic} alt="" />
+                                <h5>{selectedUser.firstName}</h5>
+                                <span>{selectedUser.bio}</span>
+                            </div>
+                            <div className="util-buttons">
+                                <button style={{ backgroundColor: "red" }}>
+                                    Block {selectedUser.firstName}
+                                </button>
+                                <button onClick={() => handleClearChat()}>
+                                    Clear Chat
+                                </button>
+                            </div>
+                        </>
                     )}
                 </div>
             </div>
