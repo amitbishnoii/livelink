@@ -1,4 +1,5 @@
 import { saveMessage } from "../controllers/messageController.js";
+import Block from "../models/Block.js"
 import jwt from 'jsonwebtoken';
 
 let onlineUsers = new Map();
@@ -19,15 +20,41 @@ export const initSocket = (io) => {
         socket.join(socket.userID);
         console.log('user connected: ', socket.userID);
 
-        socket.on("addUser", () => {
+        socket.on("addUser", async () => {
             onlineUsers.set(socket.userID, socket.id);
-            io.emit("userConnected", {
-                onlineUsers: Array.from(onlineUsers.keys())
+
+            const blocked = await Block.find({
+                $or: [
+                    { blocked_ID: socket.userID },
+                    { blocker_ID: socket.userID }
+                ]
             });
+
+            const blockedIDs = new Set();
+
+            blocked.forEach(b => {
+                blockedIDs.add(b.blocker_ID.toString());
+                blockedIDs.add(b.blocked_ID.toString());
+            });
+
+            const visibleUsers = Array.from(onlineUsers.keys())
+                .filter(id => !blockedIDs.has(id) && id !== socket.userID);
+
+            socket.emit("userConnected", {
+                onlineUsers: visibleUsers
+            });
+            console.log('onlineusers: ', onlineUsers.keys());
             console.log('rooms online: ', socket.rooms);
         });
 
         socket.on("sendMessage", async (data) => {
+            const blocked = await Block.findOne({
+                $or: [
+                    { blocked_ID: data.recID, blocker_ID: socket.userID },
+                    { blocker_ID: data.recID, blocked_ID: socket.userID }
+                ]
+            })
+            if (blocked) return;
             const save = await saveMessage(socket.userID, data);
             socket.emit("save-message", {
                 status: "ok",
@@ -41,12 +68,26 @@ export const initSocket = (io) => {
             });
         });
 
-        socket.on("startTyping", (data) => {
+        socket.on("startTyping", async (data) => {
+            const blocked = await Block.findOne({
+                $or: [
+                    { blocked_ID: data.room, blocker_ID: socket.userID },
+                    { blocker_ID: data.room, blocked_ID: socket.userID }
+                ]
+            })
+            if (blocked) return;
             console.log('typing: ', data.room);
             io.to(data.room).emit("typing:start");
         });
 
-        socket.on("stopTyping", (data) => {
+        socket.on("stopTyping", async (data) => {
+            const blocked = await Block.findOne({
+                $or: [
+                    { blocked_ID: data.room, blocker_ID: socket.userID },
+                    { blocker_ID: data.room, blocked_ID: socket.userID }
+                ]
+            })
+            if (blocked) return;
             console.log('typing stopped: ', data.room);
             io.to(data.room).emit("typing:stop");
         });
