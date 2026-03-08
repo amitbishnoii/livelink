@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import cloudinary from "../config/cloudinary.js";
+import Block from "../models/Block.js";
 
 export const getUser = async (req, res) => {
     try {
@@ -23,8 +24,6 @@ export const updateUser = async (req, res) => {
         const userExist = await User.findOne({ email: emailID }).select("-password -__v");
         let pic_url = null;
 
-        console.log('file we got here is: ', req.file);
-        console.log('user we got: ', userExist);
         if (req.file) {
             const upload = cloudinary.uploader.upload(req.file.path, {
                 folder: "profile_pictures"
@@ -64,6 +63,24 @@ export const searchUser = async (req, res) => {
         }
         else {
             res.json({ userInfo: user, success: true });
+        }
+    } catch (error) {
+        res.json({ message: error, success: false });
+    }
+}
+
+export const blockUser = async (req, res) => {
+    try {
+        const { blockedID, blockerID } = req.body;
+        const blockedUser = new Block({
+            blocked_ID: blockedID,
+            blocker_ID: blockerID,
+        });
+
+        const block = await blockedUser.save();
+
+        if (block) {
+            res.json({ message: "User blocked", user: block, success: true });
         }
     } catch (error) {
         res.json({ message: error, success: false });

@@ -149,9 +149,24 @@ const Chat = () => {
             });
             const r = await res.json();
             if (r.success) {
-                alert(`${r.deleted} message cleared!`);
+                alert(`${r.deleted} messages cleared!`);
                 setMessages([]);
             }
+        } catch (error) {
+            console.log('error occured: ', error);
+        }
+    }
+
+    const handleBlock = async () => {
+        console.log('block triggered');
+        try {
+            const res = await apiFetch("http://localhost:3000/user/block", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ blockedID: selectedUserRef.current._id, blockerID: ID })
+            });
+            const r = await res.json();
+            console.log('response: ', r);
         } catch (error) {
             console.log('error occured: ', error);
         }
@@ -236,7 +251,7 @@ const Chat = () => {
                                         <BsThreeDotsVertical size={25} color={isLight ? "black" : "white"} />
                                     </button>
                                     <div className={`mobileMenu ${menuOpen ? 'show' : 'hide'}`}>
-                                        <button>Block {selectedUser.firstName}</button>
+                                        <button onClick={() => handleBlock()}>Block {selectedUser.firstName}</button>
                                         <button onClick={() => handleClearChat()}>Clear Chat</button>
                                     </div>
                                 </div>
@@ -294,7 +309,7 @@ const Chat = () => {
                                 <span>{selectedUser.bio}</span>
                             </div>
                             <div className="util-buttons">
-                                <button style={{ backgroundColor: "red" }}>
+                                <button style={{ backgroundColor: "red" }} onClick={() => handleBlock()}>
                                     Block {selectedUser.firstName}
                                 </button>
                                 <button onClick={() => handleClearChat()}>

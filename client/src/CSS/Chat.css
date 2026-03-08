@@ -82,14 +82,14 @@
 
 .friend-info p {
     font-weight: 600;
-    color: #fff;
+    color: var(--text-primary);
     margin: 0;
     font-size: 0.95rem;
 }
 
 .friend-info span {
     font-size: 0.8rem;
-    color: #aaa;
+    color: var(--text-primary);
 }
 
 .friend-card button {
@@ -444,7 +444,7 @@ button:active {
     z-index: 1000;          
     width: 140px;           
     border-radius: 12px;    
-    background-color: #2a2a2a;
+    background-color: var(--bg-main);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
     display: flex;
     flex-direction: column;
@@ -462,12 +462,12 @@ button:active {
     width: 90%;             
     padding: 10px;           
     border: none;            
-    background: none;        
+    background-color: var(--drop-color);
     text-align: left;        
     cursor: pointer;
     border-radius: 8px;
     font-size: 14px;
-    color: #eee;
+    color: white;
     transition: background 0.2s ease, color 0.2s ease;
     display: flex;
     align-items: center;     
