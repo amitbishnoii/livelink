@@ -40,7 +40,7 @@ export const initSocket = (io) => {
             const visibleUsers = Array.from(onlineUsers.keys())
                 .filter(id => !blockedIDs.has(id) && id !== socket.userID);
 
-            socket.emit("userConnected", {
+            io.emit("userConnected", {
                 onlineUsers: visibleUsers
             });
             console.log('onlineusers: ', onlineUsers.keys());

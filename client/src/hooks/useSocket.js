@@ -17,7 +17,7 @@ export const useSocket = ({
         if (!ID) return;
         if (socketRef.current) return;
 
-        socketRef.current = io("http://localhost:3000", {
+        socketRef.current = io(`${import.meta.env.VITE_BACKEND_URL}`, {
             auth: {
                 token: localStorage.getItem("token")
             }

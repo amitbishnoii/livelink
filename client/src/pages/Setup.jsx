@@ -30,7 +30,7 @@ const SetupProfile = () => {
     const token = localStorage.getItem("token");
 
     try {
-      let res = await fetch("http://localhost:3000/user/updateInfo", {
+      let res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/updateInfo`, {
         method: "POST",
         body: formData,
         headers: {

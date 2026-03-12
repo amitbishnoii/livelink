@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import "../CSS/Chat.css";
+import dotenv from 'dotenv';
+dotenv.config();
 import { getInfo, getFriends, getFriendInfo, getMessages } from '../api/chatApi';
 import { useLocation } from 'react-router-dom';
 import { useSocket } from "../hooks/useSocket.js";
@@ -104,7 +106,7 @@ const Chat = () => {
     const handleSearch = async () => {
         try {
             if (!searchFriend) return;
-            const res = await apiFetch(`http://localhost:3000/user/searchUser?username=${searchFriend}`);
+            const res = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/user/searchUser?username=${searchFriend}`);
             const r = await res.json();
             setFriendCard(r.userInfo || null);
         } catch (err) {
@@ -115,7 +117,7 @@ const Chat = () => {
     const handleAddFriend = async () => {
         try {
             if (!friendCard) return;
-            const res = await apiFetch("http://localhost:3000/friends/friend/add", {
+            const res = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/friends/friend/add`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ sender_id: ID, rec_id: friendCard._id }),
@@ -142,7 +144,7 @@ const Chat = () => {
                 alert("Chat is already clear");
                 return;
             }
-            const res = await apiFetch("http://localhost:3000/message/clear", {
+            const res = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/message/clear`, {
                 method: "DELETE",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ senderID: ID, receiverID: selectedUserRef.current._id })
@@ -160,7 +162,7 @@ const Chat = () => {
     const handleBlock = async () => {
         console.log('block triggered');
         try {
-            const res = await apiFetch("http://localhost:3000/user/block", {
+            const res = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/user/block`, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ blockedID: selectedUserRef.current._id, blockerID: ID })
