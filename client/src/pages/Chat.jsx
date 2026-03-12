@@ -1,7 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import "../CSS/Chat.css";
-import dotenv from 'dotenv';
-dotenv.config();
 import { getInfo, getFriends, getFriendInfo, getMessages } from '../api/chatApi';
 import { useLocation } from 'react-router-dom';
 import { useSocket } from "../hooks/useSocket.js";
