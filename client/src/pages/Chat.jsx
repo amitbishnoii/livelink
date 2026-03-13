@@ -15,7 +15,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 const Chat = () => {
-    document.title = "Chat | LiveLink"
+    document.title = "Chat"
     const selectedUserRef = useRef(null);
     const typingTimeout = useRef(null);
     const bottomRef = useRef(null);

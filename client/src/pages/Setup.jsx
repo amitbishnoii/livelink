@@ -52,7 +52,7 @@ const SetupProfile = () => {
   return (
     <div className="main-page">
       <nav>
-        <h2>LiveLink</h2>
+        <h2>Chat-App</h2>
       </nav>
 
       <AnimatePresence mode="wait">
@@ -66,7 +66,7 @@ const SetupProfile = () => {
             transition={{ duration: 0.3 }}
           >
             <img src={setupImg} alt="setup" />
-            <p>Welcome to LiveLink</p>
+            <p>Welcome to Chat-App</p>
             <button onClick={() => setShowPage(true)}>
               Get Started <GrLinkNext />
             </button>
